@@ -6,6 +6,7 @@ import os
 from utils.regression import linear_regression, logarithmic_regression
 from utils.chart import generate_chart
 from utils.pdf import generate_pdf
+from utils.preprocessing import preprocess_data
 
 router = APIRouter()
 UPLOAD_DIR = "uploads/"
@@ -17,7 +18,13 @@ def linear(session_id: str):
         raise HTTPException(404, "Session ID not found")
 
     df = pd.read_csv(path)
+
+    # --- PREPROCESSING ---
+    df, report = preprocess_data(df, "linear")
+
     result = linear_regression(df)
+    result["preprocessing"] = report
+
     return result
 
 
@@ -28,7 +35,13 @@ def logaritmik(session_id: str):
         raise HTTPException(404, "Session ID not found")
 
     df = pd.read_csv(path)
+
+    # --- PREPROCESSING ---
+    df, report = preprocess_data(df, "logarithmic")
+
     result = logarithmic_regression(df)
+    result["preprocessing"] = report
+
     return result
 
 
@@ -39,7 +52,12 @@ def linear_pdf(session_id: str):
         raise HTTPException(404, "Session ID not found")
 
     df = pd.read_csv(path)
+
+    # --- PREPROCESSING ---
+    df, report = preprocess_data(df, "linear")
+
     result = linear_regression(df)
+    result["preprocessing"] = report
 
     img_path = generate_chart(df, result, "linear")
     pdf_path = generate_pdf(df, result, img_path, "linear")
@@ -49,7 +67,8 @@ def linear_pdf(session_id: str):
         media_type="application/pdf",
         filename="linear_regression_result.pdf"
     )
-    
+
+
 @router.get("/logarithmic/pdf")
 def log_pdf(session_id: str):
     path = os.path.join(UPLOAD_DIR, f"{session_id}.csv")
@@ -57,7 +76,12 @@ def log_pdf(session_id: str):
         raise HTTPException(404, "Session ID not found")
 
     df = pd.read_csv(path)
+
+    # --- PREPROCESSING ---
+    df, report = preprocess_data(df, "logarithmic")
+
     result = logarithmic_regression(df)
+    result["preprocessing"] = report
 
     img_path = generate_chart(df, result, "logarithmic")
     pdf_path = generate_pdf(df, result, img_path, "logarithmic")
