@@ -106,6 +106,16 @@ export default function ProsesPage() {
 
             <div className="my-8 border-2 border-t-8 border-primary-dark bg-white rounded-3xl p-8">
                 <p className="mb-6 text-2xl font-bold">Tabel Hasil Perhitungan Detail</p>
+
+                <div className="flex text-xl">
+                    <div className="items-center text-center w-full bg-linear-to-r from-white to-gray-200 rounded-tl-xl p-4">No</div>
+                    <div className="items-center text-center w-full bg-linear-to-r from-white to-gray-200 p-4">X</div>
+                    <div className="items-center text-center w-full bg-linear-to-r from-white to-gray-200 p-4">Y</div>
+                    <div className="items-center text-center w-full bg-linear-to-r from-white to-gray-200 p-4">Y Prediksi</div>
+                    <div className="items-center text-center w-full bg-linear-to-r from-white to-gray-200 rounded-tr-xl p-4">Residual</div>
+                </div>
+
+                {/* NOTE: di loop disini */}
             </div>
         </div>
     )
