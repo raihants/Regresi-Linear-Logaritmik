@@ -13,7 +13,7 @@ export default function Index()
         
     return (
         <div className="flex flex-col md:gap-8 gap-4 relative">
-            <div className="fixed right-2 bottom-2 md:right-5 md:bottom-5 ">
+            <div className="fixed right-2 bottom-2 md:right-5 md:bottom-5 z-20">
                 {onChat && (
                     <ChatPrompt setChat={setChat} />
                 )}
