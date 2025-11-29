@@ -3,24 +3,34 @@ import HomePage from "./tab/Home.jsx";
 import InputPage from "./tab/Input.jsx";
 import OutputPage from "./tab/Output.jsx";
 import ProsesPage from "./tab/Proses.jsx";
+import ChatPrompt from "./ChatPrompt.jsx";
 
 export default function Index()
 {
     const [tab, setTab] = useState(0);
     const [rowData, setRowData] = useState([{ x:0, y:0 }]);
+    const [onChat, setChat] = useState(false);
         
     return (
-        <div className="flex flex-col gap-8 relative">
-            <button type="button" className="fixed right-5 bottom-5 bg-linear-to-br from-primary to-secondary hover:from-secondary hover:to-primary shadow-xl p-4 rounded-full transition-colors duration-600 ease-in-out">
-                <i className="bi bi-chat-dots-fill text-white text-4xl" />
-            </button>
-
-            <div className="mx-auto mt-12 border-3 border-blue-400 p-8 w-3/4 rounded-3xl shadow-xl flex items-center flex-col bg-white">
-                <p className="text-4xl title-font bg-linear-to-r from-primary to-secondary text-transparent bg-clip-text inline-block">Aplikasi Regresi Linear</p>
-                <p className="text-center">Analisis hubungan antara dua variabel dengan metode regresi linear - Alat yang mudah digunakan untuk analisis data statistik</p>
+        <div className="flex flex-col md:gap-8 gap-4 relative">
+            <div className="fixed right-2 bottom-2 md:right-5 md:bottom-5 ">
+                {onChat && (
+                    <ChatPrompt setChat={setChat} />
+                )}
+                {!onChat && (
+                    <button type="button" className="bg-linear-to-br from-primary to-secondary hover:from-secondary hover:to-primary shadow-xl p-2 px-3 md:px-5 md:py-4 rounded-full transition-colors duration-600 ease-in-out z-20" onClick={()=> {setChat(!onChat)}}>
+                        <i className="bi bi-chat-dots-fill text-white text-2xl md:text-4xl" />
+                    </button>
+                )}
             </div>
 
-            <div className="flex justify-around mx-auto w-3/4 px-8 py-4 rounded-3xl shadow-xl border-2 border-white bg-white">
+
+            <div className="mx-auto mt-12 border-3 border-blue-400 p-8 w-[90%] md:w-3/4 rounded-3xl shadow-xl flex items-center flex-col bg-white">
+                <p className="text-3xl md:text-6xl title-font bg-linear-to-r from-primary to-secondary text-transparent bg-clip-text inline-block text-center">Aplikasi Regresi Linear</p>
+                <p className="text-center text-[0.75rem] md:text-xl">Analisis hubungan antara dua variabel dengan metode regresi linear - Alat yang mudah digunakan untuk analisis data statistik</p>
+            </div>
+
+            <div className="flex justify-around mx-auto w-[90%] md:w-3/4 px-8 py-4 rounded-3xl shadow-xl border-2 border-white bg-white flex-wrap text-[0.75rem] md:text-xl gap-x-8">
                 <button type="button" 
                     className={`baseTab ${tab==0 ? "selectedTab" : ""}`}
                     onClick={()=> { setTab(0); }}

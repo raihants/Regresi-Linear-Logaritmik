@@ -5,15 +5,16 @@ export default function InputPage({rowData, setRowData})
     const [colDef, setColDef] = useState({ x:"Nilai X", y:"Nilai Y"})
 
     return(
-        <div className="w-3/4 mx-auto flex gap-8 mb-12">
+        <div className="w-[90%] md:w-3/4 mx-auto flex flex-wrap md:flex-nowrap gap-4 md:gap-8 mb-12">
+            {/* NOTE: Bagan Input */}
             <div className="w-full bg-white flex flex-col rounded-3xl p-4 px-8 shadow-xl border-2 border-secondary border-t-8">
                 <div className="flex items-center gap-2">
-                    <i className="bi bi-table text-white bg-secondary py-2 px-3 text-xl rounded-xl"/>
-                    <p className="font-bold text-2xl">Input Manual</p>
+                    <i className="bi bi-table text-white bg-secondary py-2 px-3 text-[0.75rem] md:text-xl rounded-xl"/>
+                    <p className="font-bold text-xl md:text-2xl">Input Manual</p>
                 </div>
 
                 {/* NOTE: X and Y Value */}
-                <div className='flex gap-2 text-xl'>
+                <div className='flex gap-2 text-[1rem] md:text-xl flex-wrap md:flex-nowrap'>
                     <div className='w-full bg-linear-to-br from-white to-secondary/20 rounded-xl p-4 shadow-md'>
                         <p>Label Variabel X</p>
                         <input type="text" className='rounded-xl py-2 px-4 bg-white shadow-xl mt-2' placeholder='Misal : Jam Belajar' onChange={(e)=> { setColDef(prev => ({...prev, x: e.target.value})); }}/>
@@ -25,7 +26,7 @@ export default function InputPage({rowData, setRowData})
                 </div>
 
                 {/* NOTE: Main Table */}
-                <div className='text-2xl my-8'>
+                <div className='text-[1rem] md:text-2xl my-8'>
                     <div className='flex'>
                         <div className='w-1/2'>No.</div>
                         <p className='w-full'>{colDef.x}</p>
@@ -51,17 +52,17 @@ export default function InputPage({rowData, setRowData})
                     ))}
                 </div>
 
-                <div className='flex items-center gap-4 text-white font-bold text-xl'>
+                <div className='flex items-center gap-4 text-white font-bold text-[1rem] md:text-xl'>
                     <button type="button" className='w-full bg-success p-2 rounded-xl shadow-[0_0_16px] shadow-success/50' onClick={()=> { setRowData(prev => [...prev, {x: 0, y:0}])}}>+ Tambah Baris</button>
                     <button type="button" className='w-full bg-danger p-2 rounded-xl shadow-[0_0_16px] shadow-danger/50' onClick={()=> { setRowData(prev => prev.slice(0, -1)) }} ><i className='bi bi-trash3-fill mr-1' />Hapus Baris</button>
                 </div>
 
-                <button type="button" className='text-white font-bold text-xl w-full bg-success p-2 rounded-xl shadow-[0_0_16px] shadow-success/50 my-4'><i className='bi bi-calculator-fill mr-1'/>Proses Data & Hitung Regresi</button>
+                <button type="button" className='text-white font-bold text-[1rem] md:text-xl w-full bg-success p-2 rounded-xl shadow-[0_0_16px] shadow-success/50 my-4'><i className='bi bi-calculator-fill mr-1'/>Proses Data & Hitung Regresi</button>
             </div>
 
-            <div className="flex flex-col w-1/3 gap-8">
+            <div className="flex flex-col w-1/3 gap-4 md:gap-8 grow">
 
-                <div className='bg-[#AEDEFC] p-4 rounded-3xl text-primary-dark border-primary-dark border-2 text-xl'>
+                <div className='bg-[#AEDEFC] p-4 rounded-3xl text-primary-dark border-primary-dark border-2 text-[0.85rem] md:text-xl'>
                     <div className='flex gap-2'>
                         <i className='bi bi-info-circle-fill' />
                         <p className='font-bold'>Validasi Data</p>
@@ -75,36 +76,38 @@ export default function InputPage({rowData, setRowData})
                 </div>
 
                 <div className="bg-white flex flex-col rounded-3xl p-4 px-8 shadow-xl border-2 border-success border-t-8">
+                    {/* NOTE: import csv nanti disini jadi input */}
                     <div className="flex items-center gap-2">
                         <i className="bi bi-filetype-csv text-white bg-success py-2 px-3 text-xl rounded-xl"/>
-                        <p className="font-bold text-2xl">Import File CSV </p>
+                        <p className="font-bold text-xl md:text-2xl">Import File CSV </p>
                     </div>
 
-                    <div className='mx-auto mt-16 mb-8 flex flex-col items-center text-center'>
+                    <div className='mx-auto mt-16 mb-8 hidden md:flex flex-col items-center text-center'>
                         <i className='bi bi-cloud-upload-fill font-bold text-8xl' />
                         <p className='text-xl'>Klik atau drag file CSV di sini</p>
                         <p>Format : Kolom X, Kolom Y</p>
                     </div>
 
-                    <div className='flex flex-col w-full text-white font-bold text-xl'>
-                        <button type="button" className="bg-success p-4 rounded-xl shadow-[0_0_16px] shadow-success/50">Pilih File CSV</button>
+                    <div className='flex flex-col w-full text-white font-bold text-[0.85rem] md:text-xl mt-4 md:mt-0'>
+                        <button type="button" className="bg-success p-2 md:p-4 rounded-xl shadow-[0_0_16px] shadow-success/50">Pilih File CSV</button>
                     </div>
                 </div>
 
                 <div className="bg-white flex flex-col rounded-3xl p-4 px-8 shadow-xl border-2 border-warning border-t-8">
+                    {/* NOTE: import xlsx nanti disini jadi input */}
                     <div className="flex items-center gap-2">
                         <i className="bi bi-filetype-xlsx text-white bg-warning py-2 px-3 text-xl rounded-xl"/>
-                        <p className="font-bold text-2xl">Import File CSV </p>
+                        <p className="font-bold text-xl md:text-2xl">Import File Excel </p>
                     </div>
 
-                    <div className='mx-auto mt-16 mb-8 flex flex-col items-center text-center'>
+                    <div className='mx-auto mt-16 mb-8 hidden md:flex flex-col items-center text-center'>
                         <i className='bi bi-cloud-upload-fill font-bold text-8xl' />
                         <p className='text-xl'>Klik atau drag file Excel di sini</p>
                         <p>Format : Kolom X, Kolom Y</p>
                     </div>
 
-                    <div className='flex flex-col w-full text-white font-bold text-xl'>
-                        <button type="button" className="bg-warning p-4 rounded-xl shadow-[0_0_16px] shadow-warning/50">Pilih File Excel</button>
+                    <div className='flex flex-col w-full text-white font-bold text-[0.85rem] md:text-xl mt-4 md:mt-0'>
+                        <button type="button" className="bg-warning p-2 md:p-4 rounded-xl shadow-[0_0_16px] shadow-warning/50">Pilih File Excel</button>
                     </div>
                 </div>
 
