@@ -154,11 +154,11 @@ export default function HomePage() {
                         </div>
 
                         <div className="base-bg-gradient-r text-white shadow-[0_2px_8px] shadow-primary rounded-xl p-4 max-w-3/4 w-fit ml-auto">
-                            <p>Apa itu regresi linear sederhana</p>
+                            <p>Apa arti nilai R² dari hasil regresi saya?</p>
                         </div>
 
                         <div className="bg-white shadow-[0_2px_8px] shadow-gray-400 rounded-xl p-4 max-w-3/4 w-fit">
-                            <p>Regresi Linear sederhana adalah metode statistik untuk memodelkan hubungan antara dua variabel...</p>
+                            <p>Nilai R² (R-squared) menunjukkan seberapa baik model regresi menjelaskan variasi dalam data. Semakin besar nilai R², maka model regresi tersebut lebih baik dalam menjelaskan data.</p>
                         </div>
 
                         <div className="text-gray-400 mt-6 flex items-center justify-between">
@@ -175,7 +175,7 @@ export default function HomePage() {
                     {devPage==0 && (
                         <div className="flex gap-6 m-4 flex-wrap md:flex-nowrap">
                             <div className="bg-white/20 p-6 w-full md:w-1/3 rounded-xl border-white/50 border-2 flex flex-col items-center gap-2 grow">
-                                <img src="/profile.jpeg" className="w-16 rounded-full shadow-xl" />
+                                <img src="/ulwan.jpeg" className="w-16 rounded-full shadow-xl" />
                                 <p className="font-bold text-center text-2xl">M ULWAN ZUHDI</p>
                                 <p className="text-xl">Frontend Developer</p>
                                 <p>Bertanggung jawab atas UI/UX dan implementasi React.</p>
@@ -183,13 +183,13 @@ export default function HomePage() {
 
                             <div className="bg-white/20 p-6 w-full md:w-1/3 rounded-xl border-white/50 border-2 flex flex-col items-center gap-2 grow">
                                 <img src="/profile.jpeg" className="w-16 rounded-full shadow-xl" />
-                                <p className="font-bold text-center text-2xl">M DIRGAM SHACIO</p>
+                                <p className="font-bold text-center text-2xl">MUHAMMAD DIRGAM SHACIO</p>
                                 <p className="text-xl">Data Analyst</p>
                                 <p>Ahli dalam algoritma statistik dan validasi data.</p>
                             </div>
 
                             <div className="bg-white/20 p-6 w-full md:w-1/3 rounded-xl border-white/50 border-2 flex flex-col items-center gap-2 grow">
-                                <img src="/profile.jpeg" className="w-16 rounded-full shadow-xl" />
+                                <img src="/raihan.jpeg" className="w-16 rounded-full shadow-xl" />
                                 <p className="font-bold text-center text-2xl">RAIHAN TAUFIK SURYANA</p>
                                 <p className="text-xl">Backend Developer</p>
                                 <p>Mengelola Logika bisnis dan optimasi performa</p>
