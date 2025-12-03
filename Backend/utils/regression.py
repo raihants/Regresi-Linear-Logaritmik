@@ -6,9 +6,9 @@ def linear_regression(df, preprocessing_report=""):
     report = preprocessing_report
 
     clean_data_report = []
-    clean_data_report.append(f"Jumlah data awal: {len(df_before)}")
-    clean_data_report.append(f"Jumlah data setelah preprocessing: {len(df)}")
-    clean_data_report.append(f"Data yang dihapus: {len(df_before) - len(df)}")
+    clean_data_report.append(f"data masuk: {len(df_before)}")
+    clean_data_report.append(f"data tampil: {len(df)}")
+    clean_data_report.append(f"data hapus: {len(df_before) - len(df)}")
 
     cleaned_data = df.to_dict(orient="records")
 
@@ -20,24 +20,23 @@ def linear_regression(df, preprocessing_report=""):
     sumY = Y.sum()
     sumXY = (X * Y).sum()
     sumX2 = (X**2).sum()
+    sumY2 = (Y**2).sum()
 
-    b = (n * sumXY - sumX * sumY) / (n * sumX2 - sumX ** 2)
-    a = (sumY - b * sumX) / n
+    b = ((n * sumXY) - (sumX * sumY)) / ((n * sumX2) - (sumX ** 2))
 
-    Y_pred = a + b * X
-    ss_res = ((Y - Y_pred)**2).sum()
-    ss_tot = ((Y - Y.mean())**2).sum()
-    r2 = 1 - (ss_res / ss_tot)
+    a = (sumY - (b * sumX)) / n
 
+    r = ((n * sumXY) - (sumX * sumY)) / (np.sqrt((n * sumX2 - sumX**2) * (n * sumY2 - sumY**2)))
+    
     details = [
         f"n = {n}",
         f"ΣX = {sumX}",
         f"ΣY = {sumY}",
         f"ΣXY = {sumXY}",
-        f"ΣX² = {sumX2}",
-        "",
+        f"ΣX^2 = {sumX2}",
+        f"ΣY^2 = {sumY2}",
         f"Persamaan: Y = {a} + {b}X",
-        f"R² = {r2}"
+        f"R = {r}"
     ]
 
     return {
@@ -49,57 +48,80 @@ def linear_regression(df, preprocessing_report=""):
         "clean_data_report": clean_data_report,
         "cleaned_data": cleaned_data,
         "details": details,
-        "r2": float(r2)
+        "r": float(r)
     }
 
 
 def logarithmic_regression(df, preprocessing_report=""):
     df_before = df.copy()
-
     report = preprocessing_report
 
     clean_data_report = []
-    clean_data_report.append(f"Jumlah data awal: {len(df_before)}")
-    clean_data_report.append(f"Jumlah data setelah preprocessing: {len(df)}")
-    clean_data_report.append(f"Total data dibuang: {len(df_before) - len(df)}")
+    clean_data_report.append(f"data masuk: {len(df_before)}")
+    clean_data_report.append(f"data tampil: {len(df)}")
+    clean_data_report.append(f"data hapus: {len(df_before) - len(df)}")
 
     cleaned_data = df.to_dict(orient="records")
 
-    X = df["X"]
-    Y = df["Y"]
-    lnX = np.log(X)
+    X_original = df["X"] # Epsilon
+    Y_original = df["Y"] # Sigma
 
-    n = len(X)
-    sumlnX = lnX.sum()
-    sumY = Y.sum()
-    sumlnX2 = (lnX**2).sum()
-    sumlnX_Y = (lnX * Y).sum()
+    # Model: Sigma = k * Epsilon^n  ->  Log(Sigma) = Log(k) + n * Log(Epsilon)
+    logX = np.log10(X_original)
+    logY = np.log10(Y_original)
 
-    b = (n * sumlnX_Y - sumlnX * sumY) / (n * sumlnX2 - sumlnX ** 2)
-    a = (sumY - b * sumlnX) / n
+    n_data = len(df)
+    sum_logX = logX.sum()
+    sum_logY = logY.sum()
+    sum_logX2 = (logX**2).sum()
+    sum_logY2 = (logY**2).sum()       # Dibutuhkan untuk hitung korelasi (r)
+    sum_logXY = (logX * logY).sum()
 
-    Y_pred = a + b * lnX
-    ss_res = ((Y - Y_pred)**2).sum()
-    ss_tot = ((Y - Y.mean())**2).sum()
-    r2 = 1 - (ss_res / ss_tot)
+    # Hitung Slope (n) dan Intercept (a = log k)
+    # Rumus Slope (n)    
+    n_slope = ((n_data * sum_logXY) - (sum_logX * sum_logY)) / ((n_data * sum_logX2) - (sum_logX**2))  # Ini adalah nilai 'n'
+    
+    # Rumus Intercept (log k) atau sering disebut alpha dalam regresi linear
+    log_k = (sum_logY - (n_slope * sum_logX)) / n_data
+    
+    # Hitung nilai K asli (antilog)
+    k_value = 10**log_k
 
+    # 5. Hitung Korelasi (r)
+    r = ((n_data * sum_logXY) - (sum_logX * sum_logY)) / np.sqrt(((n_data * sum_logX2) - (sum_logX**2)) * ((n_data * sum_logY2) - (sum_logY**2)))
+    r2 = r**2
+
+    # Detail perhitungan untuk ditampilkan
+    # Diperbarui untuk menampilkan dua bentuk persamaan
     details = [
-        f"n = {n}",
-        f"Σln(X) = {sumlnX}",
-        f"ΣY = {sumY}",
-        f"Σln(X)*Y = {sumlnX_Y}",
-        f"Σ(lnX)² = {sumlnX2}",
+        f"n (Jumlah Data) = {n_data}",
+        f"Σ Log X  = {sum_logX:.4f}",
+        f"Σ Log Y  = {sum_logY:.4f}",
+        f"Σ Log X * Log Y = {sum_logXY:.4f}",
+        f"Σ (Log X)^2 = {sum_logX2:.4f}",
         "",
-        f"Persamaan: Y = {a} + {b} ln(X)",
+        f"Slope (n) = {n_slope:.5f}",
+        f"Intercept (Log k / Alpha) = {log_k:.5f}",
+        f"Konstanta (k) = {k_value:.5f}",
         "",
-        f"R² = {r2}"
+        "--- HASIL PERSAMAAN ---",
+        f"1. Bentuk Linear: Log(Y) = {log_k:.4f} + {n_slope:.4f} * Log(X)",
+        f"2. Bentuk Pangkat: Y = {k_value:.4f} * X^{n_slope:.4f}",
+        "",
+        f"Korelasi (r) = {r:.5f}",
+        f"R² = {r2:.5f}"
     ]
 
     return {
-        "model": "logarithmic",
-        "a": float(a),
-        "b": float(b),
-        "equation": f"Y = {a} + {b} ln(X)",
+        "model": "Logarithmic Power Law",
+        "n": float(n_slope),
+        "k": float(k_value),
+        "log_k": float(log_k), # Ini adalah intercept (alpha) pada regresi linear
+        
+        # Output dua string persamaan agar bisa dipilih
+        "equation_linear": f"Log(Y) = {log_k:.4f} + {n_slope:.4f} * Log(X)",
+        "equation_power": f"Y = {k_value:.4f} * X^{n_slope:.4f}",
+        
         "preprocessing_report": report,
         "clean_data_report": clean_data_report,
         "cleaned_data": cleaned_data,
