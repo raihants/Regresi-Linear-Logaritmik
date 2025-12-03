@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-export default function HomePage() {
+export default function HomePage({setTab, setWarningMsg}) {
     const [devPage, setDevPage] = useState(0);
 
     const controlPage = (i) => {
@@ -143,7 +143,11 @@ export default function HomePage() {
                             </p>
                         </div>
 
-                        <button type="button" className="text-white text-[0.9rem] md:text-2xl bg-linear-to-r from-primary to-secondary p-2 md:p-4 rounded-xl font-bold shadow-[0_0_16px] shadow-primary/50 w-full hover:from-secondary hover:to-primary transition-colors duration-300 ease-in-out">
+                        <button type="button" className="text-white text-[0.9rem] md:text-2xl bg-linear-to-r from-primary to-secondary p-2 md:p-4 rounded-xl font-bold shadow-[0_0_16px] shadow-primary/50 w-full hover:from-secondary hover:to-primary transition-colors duration-300 ease-in-out" onClick={()=> {
+                            setTab(1);
+                            setWarningMsg("Untuk bertanya dengan AI, inputkan terlebih dahulu data nya 😊")
+                            window.scrollTo(0, 0);
+                        }}>
                             <i className="bi bi-robot mr-1" />Tanya AI Sekarang!
                         </button>
                     </div>
@@ -175,7 +179,7 @@ export default function HomePage() {
                     {devPage==0 && (
                         <div className="flex gap-6 m-4 flex-wrap md:flex-nowrap">
                             <div className="bg-white/20 p-6 w-full md:w-1/3 rounded-xl border-white/50 border-2 flex flex-col items-center gap-2 grow">
-                                <img src="/ulwan.jpeg" className="w-16 rounded-full shadow-xl" />
+                                <img src="/ulwan.jpeg" className="w-16 rounded-full shadow-xl object-cover h-16" />
                                 <p className="font-bold text-center text-2xl">M ULWAN ZUHDI</p>
                                 <p className="text-xl">Frontend Developer</p>
                                 <p>Bertanggung jawab atas UI/UX dan implementasi React.</p>
@@ -189,7 +193,7 @@ export default function HomePage() {
                             </div>
 
                             <div className="bg-white/20 p-6 w-full md:w-1/3 rounded-xl border-white/50 border-2 flex flex-col items-center gap-2 grow">
-                                <img src="/raihan.jpeg" className="w-16 rounded-full shadow-xl" />
+                                <img src="/raihan.jpeg" className="w-16 rounded-full shadow-xl object-cover h-16" />
                                 <p className="font-bold text-center text-2xl">RAIHAN TAUFIK SURYANA</p>
                                 <p className="text-xl">Backend Developer</p>
                                 <p>Mengelola Logika bisnis dan optimasi performa</p>

@@ -8,14 +8,20 @@ import ChatPrompt from "./ChatPrompt.jsx";
 export default function Index() 
 {
     const [tab, setTab] = useState(0);
+    const [warningMsg, setWarningMsg] = useState("");
 
     // Data & Backend
-    const [rowData, setRowData] = useState([{ x: 0, y: 0 }]);
+    const [rowData, setRowData] = useState([{ x: 0, y: 0, xEdit:null, yEdit:null }]);
     const [sessionId, setSessionId] = useState(null);
     const [regressionResult, setRegressionResult] = useState(null);
+    const [kecermatan, setKecermatan] = useState(4);
 
     // Chat Prompt
     const [onChat, setChat] = useState(false);
+
+    function applyKecermatan(num) {
+        return Number(num).toFixed(kecermatan);
+    }
 
     return (
         <div className="flex flex-col md:gap-8 gap-4 relative">
@@ -86,7 +92,7 @@ export default function Index()
 
             {/* Page Switch */}
             <div>
-                {(tab === 0 && <HomePage />)}
+                {(tab === 0 && <HomePage setTab={setTab} setWarningMsg={setWarningMsg} />)}
 
                 {(tab === 1 && (
                     <InputPage
@@ -94,6 +100,12 @@ export default function Index()
                         setRowData={setRowData}
                         setSessionId={setSessionId}
                         setRegressionResult={setRegressionResult}
+                        warningMsg={warningMsg}
+                        setWarningMsg={setWarningMsg}
+                        kecermatan={kecermatan}
+                        setKecermatan={setKecermatan}
+                        setTab={setTab}
+                        applyKecermatan={applyKecermatan}
                     />
                 ))}
 
@@ -102,6 +114,8 @@ export default function Index()
                         sessionId={sessionId}
                         regressionResult={regressionResult}
                         setRegressionResult={setRegressionResult}
+                        kecermatan={kecermatan}
+                        applyKecermatan={applyKecermatan}
                     />
                 ))}
 

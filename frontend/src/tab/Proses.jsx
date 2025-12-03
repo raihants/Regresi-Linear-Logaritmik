@@ -1,6 +1,6 @@
 import { useState, useMemo } from "react";
 
-export default function ProsesPage({ sessionId, setRegressionResult, regressionResult }) {
+export default function ProsesPage({ sessionId, setRegressionResult, regressionResult, applyKecermatan }) {
     const [loading, setLoading] = useState(false);
 
     const runRegression = async () => {
@@ -82,6 +82,7 @@ export default function ProsesPage({ sessionId, setRegressionResult, regressionR
                     </div>
                 )}
 
+                {/*
                 <button
                     type="button"
                     onClick={runRegression}
@@ -90,9 +91,10 @@ export default function ProsesPage({ sessionId, setRegressionResult, regressionR
                     <i className="bi bi-gear-fill mr-1" />
                     {loading ? "Menghitung..." : "Jalankan Perhitungan Regresi"}
                 </button>
+                */}
             </div>
 
-            {/* ================= STATISTIK & PARAMETER ================= */}
+            {/* NOTE: STATISTIK & PARAMETER */}
             {regressionResult && (
                 <div className="flex gap-4 md:gap-8 my-8 flex-wrap md:flex-nowrap">
 
@@ -102,12 +104,25 @@ export default function ProsesPage({ sessionId, setRegressionResult, regressionR
                         <div className="flex flex-col my-4 md:my-8 text-[0.85rem] md:text-xl gap-4 md:gap-8 w-5/6 mx-auto">
                             <div className="flex justify-between">
                                 <p>Rata-rata X (x̄)</p>
-                                <p className="text-primary font-bold">{stats?.avgX}</p>
+                                <p className="text-primary font-bold">{applyKecermatan(stats?.avgX)}</p>
                             </div>
 
                             <div className="flex justify-between">
                                 <p>Rata-rata Y (ȳ)</p>
-                                <p className="text-primary font-bold">{stats?.avgY}</p>
+                                <p className="text-primary font-bold">{applyKecermatan(stats?.avgY)}</p>
+                            </div>
+
+                            <div className="flex justify-between">
+                                <p>{regressionResult.details[1]}</p>
+                            </div>
+                            <div className="flex justify-between">
+                                <p>{regressionResult.details[2]}</p>
+                            </div>
+                            <div className="flex justify-between">
+                                <p>{regressionResult.details[3]}</p>
+                            </div>
+                            <div className="flex justify-between">
+                                <p>{regressionResult.details[4]}</p>
                             </div>
                         </div>
                     </div>
@@ -117,19 +132,25 @@ export default function ProsesPage({ sessionId, setRegressionResult, regressionR
                         <p className="text-xl md:text-2xl font-bold">Parameter Regresi</p>
                         <div className="flex flex-col my-4 md:my-8 text-[0.85rem] md:text-xl gap-4 md:gap-8 w-5/6 mx-auto">
                             <div className="flex justify-between">
-                                <p>Slope (b)</p>
-                                <p className="text-secondary font-bold">{regressionResult.b}</p>
+                                <p>Koefisien Korelasi</p>
+                                <p className="text-secondary font-bold">{applyKecermatan(1)}</p>
                             </div>
+
                             <div className="flex justify-between">
-                                <p>Intercept (a)</p>
-                                <p className="text-secondary font-bold">{regressionResult.a}</p>
+                                <p>Intercept (koefisien a)</p>
+                                <p className="text-secondary font-bold">{applyKecermatan(regressionResult.a)}</p>
+                            </div>
+
+                            <div className="flex justify-between">
+                                <p>Slope (koefisien b)</p>
+                                <p className="text-secondary font-bold">{applyKecermatan(regressionResult.b)}</p>
                             </div>
                         </div>
                     </div>
                 </div>
             )}
 
-            {/* ================= PERSAMAAN REGRESI ================= */}
+            {/* NOTE: PERSAMAAN REGRESI */}
             {regressionResult && (
                 <div className="w-full p-8 rounded-3xl base-bg-gradient-br items-center flex flex-col my-8">
                     <p className="text-xl md:text-2xl title-font text-white text-center mt-4 mb-8">
@@ -138,15 +159,11 @@ export default function ProsesPage({ sessionId, setRegressionResult, regressionR
 
                     <div className="bg-white p-6 flex flex-col gap-0 md:gap-4 text-center items-center rounded-3xl w-full">
                         <p className="text-2xl md:text-4xl title-font bg-linear-to-r from-primary to-secondary text-transparent bg-clip-text inline-block">
-                            {regressionResult.equation}
+                            Y = {applyKecermatan(regressionResult.equation.match(/-?\d+(\.\d+)?/g)[0])} + {applyKecermatan(regressionResult.equation.match(/-?\d+(\.\d+)?/g)[1])}X
                         </p>
 
-                        <p className="text-[0.75rem] md:text-[1rem]">atau</p>
-
-                        <p className="text-[1rem] md:text-xl font-bold">
-                            {regressionResult.model === "logarithmic"
-                                ? "Y = a + b ln(X)"
-                                : "Y = bX + a"}
+                        <p className="text-2xl md:text-4xl title-font bg-linear-to-r from-primary to-secondary text-transparent bg-clip-text inline-block">
+                            r² = {applyKecermatan(regressionResult.r2)}
                         </p>
                     </div>
 
@@ -159,26 +176,26 @@ export default function ProsesPage({ sessionId, setRegressionResult, regressionR
                 </div>
             )}
 
-            {/* ================= TABEL DETAIL ================= */}
+            {/* NOTE: TABEL DETAIL */}
             {regressionResult && (
                 <div className="my-8 border-2 border-t-8 border-primary-dark bg-white rounded-3xl p-8">
                     <p className="mb-6 text-xl md:text-2xl font-bold">Tabel Hasil Perhitungan Detail</p>
 
-                    <div className="flex text-[0.85rem] md:text-xl overflow-x-auto items-center text-center">
-                        <div className="w-20 bg-gray-200 p-2 md:p-4">No</div>
-                        <div className="w-32 bg-gray-200 p-2 md:p-4">X</div>
-                        <div className="w-32 bg-gray-200 p-2 md:p-4">Y</div>
-                        <div className="w-40 bg-gray-200 p-2 md:p-4">Y Prediksi</div>
-                        <div className="w-32 bg-gray-200 p-2 md:p-4">Residual</div>
+                    <div className="flex text-[0.85rem] md:text-xl overflow-x-auto items-center text-center bg-gray-300">
+                        <div className="w-20 md:w-1/2 p-2 md:p-4">No</div>
+                        <div className="w-20 md:w-full p-2 md:p-4">X</div>
+                        <div className="w-20 md:w-full p-2 md:p-4">Y</div>
+                        <div className="w-32 md:w-full p-2 md:p-4">Y Prediksi</div>
+                        <div className="w-20 md:w-full p-2 md:p-4">Residual</div>
                     </div>
 
                     {tableData.map(row => (
-                        <div key={row.no} className="flex text-[0.85rem] md:text-xl items-center text-center border-b">
-                            <div className="w-20 p-2 md:p-4">{row.no}</div>
-                            <div className="w-32 p-2 md:p-4">{row.X}</div>
-                            <div className="w-32 p-2 md:p-4">{row.Y}</div>
-                            <div className="w-40 p-2 md:p-4">{row.yPred}</div>
-                            <div className="w-32 p-2 md:p-4">{row.residual}</div>
+                        <div key={row.no} className="flex text-[0.85rem] md:text-xl items-center text-center border-b border-gray-300">
+                            <div className="w-20 md:w-1/2 p-2 md:p-4">{row.no}</div>
+                            <div className="w-20 md:w-full p-2 md:p-4">{applyKecermatan(row.X)}</div>
+                            <div className="w-20 md:w-full p-2 md:p-4">{applyKecermatan(row.Y)}</div>
+                            <div className="w-32 md:w-full p-2 md:p-4">{applyKecermatan(row.yPred)}</div>
+                            <div className="w-20 md:w-full p-2 md:p-4">{applyKecermatan(row.residual)}</div>
                         </div>
                     ))}
                 </div>
