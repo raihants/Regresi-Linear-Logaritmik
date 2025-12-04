@@ -3,6 +3,7 @@ import pandas as pd
 
 def preprocess_data(df: pd.DataFrame, model: str):
     report = []
+    df_raw = df.copy()  # simpan data asli untuk hitung data hapus
 
     # --- Normalisasi nama kolom ---
     df.columns = (
@@ -11,12 +12,12 @@ def preprocess_data(df: pd.DataFrame, model: str):
         .str.replace('\ufeff', '', regex=True)
     )
 
-    # --- Rename kolom pertama & kedua ---
+    # --- Rename kolom pertama ---
     old_x, old_y = df.columns[0], df.columns[1]
     df = df.rename(columns={old_x: "X", old_y: "Y"})
     report.append(f"Rename kolom '{old_x}', '{old_y}' menjadi X, Y")
 
-    # --- Drop NA ---
+    # --- Hapus NA ---
     before = len(df)
     df = df.dropna()
     after = len(df)
@@ -32,30 +33,37 @@ def preprocess_data(df: pd.DataFrame, model: str):
     if before != after:
         report.append(f"Menghapus {before - after} baris non-numerik")
 
-    # --- Validasi khusus logaritmik ---
+    # --- Logarithmic: X tidak boleh 0 ---
     if model == "logarithmic":
         zero_count = (df["X"] == 0).sum()
+        df = df[df["X"] != 0]
         if zero_count > 0:
-            df = df[df["X"] != 0]
-            report.append(
-                f"Menghapus {zero_count} baris karena X = 0 tidak valid pada regresi logaritmik"
-            )
+            report.append(f"Menghapus {zero_count} baris (X = 0 tidak valid untuk logaritmik)")
 
-    # --- Sort data ---
+    # --- Sort ---
     df = df.sort_values("X").reset_index(drop=True)
     report.append("Men-sort data berdasarkan X")
 
-    # --- Remove outlier Z-score > 3 ---
-    z = np.abs((df[["X","Y"]] - df[["X","Y"]].mean()) / df[["X","Y"]].std())
+    # --- Outlier Z-score ---
     before = len(df)
+    z = np.abs((df[["X","Y"]] - df[["X","Y"]].mean()) / df[["X","Y"]].std())
     df = df[(z < 3).all(axis=1)]
     after = len(df)
     if before != after:
-        report.append(f"Menghapus {before - after} baris outlier (Z-score > 3)")
+        report.append(f"Menghapus {before - after} outlier (Z > 3)")
 
-    # --- Normalisasi Min-Max ---
+    # --- Normalisasi ---
     df["X_norm"] = (df["X"] - df["X"].min()) / (df["X"].max() - df["X"].min())
     df["Y_norm"] = (df["Y"] - df["Y"].min()) / (df["Y"].max() - df["Y"].min())
-    report.append("Normalisasi X dan Y dengan Min-Max scaling")
+    report.append("Normalisasi Min-Max pada X dan Y")
 
-    return df, report
+    # --- Rekap bersih ---
+    total_awal = len(df_raw)
+    total_akhir = len(df)
+    clean_data_report = [
+        f"data masuk: {total_awal}",
+        f"data tampil: {total_akhir}",
+        f"data hapus: {total_awal - total_akhir}"
+    ]
+
+    return df, report, clean_data_report
