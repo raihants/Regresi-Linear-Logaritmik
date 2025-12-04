@@ -38,6 +38,15 @@ def load_session_file(session_id: str):
 def linear(session_id: str):
     df_raw = load_session_file(session_id)
     df_clean, report, clean_data_report = preprocess_data(df_raw, model="linear")
+    
+    response = FileResponse(
+        media_type="application/pdf",
+        filename="logarithmic_regression_result.pdf"
+    )
+
+    response.headers["Access-Control-Allow-Origin"] = "*"
+    response.headers["Access-Control-Allow-Credentials"] = "true"
+    
     return linear_regression(df_clean, report, clean_data_report)
 
 
@@ -71,6 +80,15 @@ def linear_pdf(session_id: str):
 def logaritmik(session_id: str):
     df_raw = load_session_file(session_id)
     df_clean, report, clean_data_report = preprocess_data(df_raw, model="logarithmic")
+    
+    response = FileResponse(
+        media_type="application/pdf",
+        filename="logarithmic_regression_result.pdf"
+    )
+
+    response.headers["Access-Control-Allow-Origin"] = "*"
+    response.headers["Access-Control-Allow-Credentials"] = "true"
+    
     return logarithmic_regression(df_clean, report, clean_data_report)
 
 
