@@ -185,14 +185,14 @@ export default function ProsesPage({ res, kec, ...props }) {
                             <div className="equation-container">
                                 <p className="mt-2">Rata-rata (x̄)</p>
                                 <MathJax>
-                                    {`\\[ x̄ = \\frac{ΣX}{n} = \\frac{${kec(res.sumX)}}{${kec(res.len)}} = ${kec(stats.avgX)} \\]`}
+                                    {`\\[ x̄ = \\frac{ΣX}{n} = \\frac{${kec(res.sumX)}}{${res.len}} = ${kec(stats.avgX)} \\]`}
                                 </MathJax>
                             </div>
 
                             <div className="equation-container">
                                 <p className="mt-2">Rata-rata (ȳ)</p>
                                 <MathJax>
-                                    {`\\[ ȳ = \\frac{ΣY}{n} = \\frac{${kec(res.sumY)}}{${kec(res.len)}} = ${kec(stats.avgY)} \\]`}
+                                    {`\\[ ȳ = \\frac{ΣY}{n} = \\frac{${kec(res.sumY)}}{${res.len}} = ${kec(stats.avgY)} \\]`}
                                 </MathJax>
                             </div>
                         </div>
@@ -205,7 +205,7 @@ export default function ProsesPage({ res, kec, ...props }) {
                                 {`\\[r = \\frac{(n \\cdot ΣXY)-(ΣX \\cdot ΣY)}{\\sqrt{[(n \\cdot ΣX^2) - (ΣX)^2] \\cdot [(n \\cdot ΣY^2) - (ΣY)^2]}} = \\]`}
                             </MathJax>
                             <MathJax>
-                                {`\\[ \\frac{(${kec(res.len)} \\cdot ${kec(res.sumXY)})-(${kec(res.sumX)} \\cdot ${kec(res.sumY)})}{\\sqrt{[(${kec(res.len)} \\cdot ${kec(res.sumX2)}) - (${kec(res.sumX)})^2] \\cdot [(${kec(res.len)} \\cdot ${kec(res.sumY2)}) - (${kec(res.sumY)})^2]}} = \\]`}
+                                {`\\[ \\frac{(${res.len} \\cdot ${kec(res.sumXY)})-(${kec(res.sumX)} \\cdot ${kec(res.sumY)})}{\\sqrt{[(${res.len} \\cdot ${kec(res.sumX2)}) - (${kec(res.sumX)})^2] \\cdot [(${res.len} \\cdot ${kec(res.sumY2)}) - (${kec(res.sumY)})^2]}} = \\]`}
                             </MathJax>
                             <MathJax>
                                 {`\\[ \\frac{(${kec(res.len * res.sumXY)})-(${kec(res.sumX * res.sumY)})}{\\sqrt{[(${kec(res.len * res.sumX2)}) - ${kec(res.sumX2)}] \\cdot [(${kec(res.len * res.sumY2)}) - ${kec(res.sumY2)}]}} = \\]`}
@@ -226,7 +226,13 @@ export default function ProsesPage({ res, kec, ...props }) {
                                 {`\\[a = \\frac{(ΣY \\cdot ΣX^2)-(ΣX \\cdot ΣXY)}{(n \\cdot ΣX^2) - (ΣX)^2} = \\]`}
                             </MathJax>
                             <MathJax>
-                                {`\\[ \\frac{(${kec(res.sumY)} \\cdot ${kec(res.sumX2)})-(${kec(res.sumX)} \\cdot ${kec(res.sumXY)})}{(${kec(res.len)} \\cdot ${kec(res.sumX2)}) - (${kec(res.sumX)})^2} = ${kec(res.a)} \\]`}
+                                {`\\[ \\frac{(${kec(res.sumY)} \\cdot ${kec(res.sumX2)})-(${kec(res.sumX)} \\cdot ${kec(res.sumXY)})}{(${res.len} \\cdot ${kec(res.sumX2)}) - (${kec(res.sumX)})^2} = \\]`}
+                            </MathJax>
+                            <MathJax>
+                                {`\\[ \\frac{(${kec(res.sumY * res.sumX2)})-(${kec(res.sumX * res.sumXY)})}{(${kec(res.len * res.sumX2)}) - ${kec(res.sumX2)}} = \\]`}
+                            </MathJax>
+                            <MathJax>
+                                {`\\[ \\frac{${kec( (res.sumY * res.sumX2) - (res.sumX * res.sumXY) )}}{${kec( (res.len * res.sumX2) - res.sumX2)}} = ${kec(res.a)} \\]`}
                             </MathJax>
                         </div>
                     )}
@@ -235,10 +241,16 @@ export default function ProsesPage({ res, kec, ...props }) {
                         <div className="equation-container mx-auto">
                             <p className="mt-2">Koefisien b</p>
                             <MathJax>
-                                {`\\[a = \\frac{(ΣY \\cdot ΣX^2)-(ΣX \\cdot ΣXY)}{(n \\cdot ΣX^2) - (ΣX)^2} = \\]`}
+                                {`\\[a = \\frac{n \\cdot (ΣXY) - (ΣX \\cdot ΣY)}{(n \\cdot ΣX^2) - (ΣX)^2} = \\]`}
                             </MathJax>
                             <MathJax>
-                                {`\\[ \\frac{(${kec(res.sumY)} \\cdot ${kec(res.sumX2)})-(${kec(res.sumX)} \\cdot ${kec(res.sumXY)})}{(${kec(res.len)} \\cdot ${kec(res.sumX2)}) - (${kec(res.sumX)})^2} = ${kec(res.a)} \\]`}
+                                {`\\[ \\frac{${res.len} \\cdot (${kec(res.sumXY)}) - (${kec(res.sumX)} \\cdot ${kec(res.sumY)})}{(${res.len} \\cdot ${kec(res.sumX2)}) - (${kec(res.sumX)})^2} = \\]`}
+                            </MathJax>
+                            <MathJax>
+                                {`\\[ \\frac{${kec(res.len * res.sumXY)} - ${kec(res.sumX * res.sumY)}}{${kec(res.len * res.sumX2)} - ${kec(res.sumX2)}} = \\]`}
+                            </MathJax>
+                            <MathJax>
+                                {`\\[ \\frac{${kec( (res.len * res.sumXY) - (res.sumX * res.sumY) )}}{${kec( (res.len * res.sumX2) - res.sumX2 )}} = ${kec(res.b)} \\]`}
                             </MathJax>
                         </div>
                     )}
