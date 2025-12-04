@@ -119,7 +119,7 @@ export default function InputPage({ rowData, setRowData, setRegressionResult, se
     const handleProcess = async () => {
         try {
             if (rowData.length < 2) {
-                alert("Minimal harus ada 2 pasang data!");
+                props.setErrorMsg("Minimal ada 2 baris data pada tabel!");
                 return;
             }
 
@@ -136,7 +136,7 @@ export default function InputPage({ rowData, setRowData, setRegressionResult, se
 
             const uploadData = await uploadResp.json();
             if (!uploadResp.ok) {
-                alert(uploadData.detail || "Upload JSON gagal");
+                props.setErrorMsg(uploadData.detail || "Upload JSON gagal");
                 return;
             }
 
@@ -146,7 +146,7 @@ export default function InputPage({ rowData, setRowData, setRegressionResult, se
             const regResp = await fetch(`${API_URL}/regression/${modelType}?session_id=${sessionId}`);
             const regResult = await regResp.json();
             if (!regResp.ok) {
-                alert(regResult.detail || "Gagal menghitung regresi");
+                props.setErrorMsg(regResult.detail || "Gagal menghitung regresi");
                 return;
             }
 
@@ -155,7 +155,7 @@ export default function InputPage({ rowData, setRowData, setRegressionResult, se
             setTab(2);
         } catch (err) {
             console.error(err);
-            alert("Terjadi error ketika memproses data.");
+            props.setErrorMsg("Terjadi error ketika memproses data.");
         }
     };
 

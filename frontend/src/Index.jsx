@@ -9,6 +9,7 @@ export default function Index()
 {
     const [tab, setTab] = useState(0);
     const [warningMsg, setWarningMsg] = useState("");
+    const [errorMsg, setErrorMsg] = useState("you got mail");
 
     // Data & Backend
     const [rowData, setRowData] = useState([{ x: 0, y: 0, xEdit:null, yEdit:null }]);
@@ -24,9 +25,31 @@ export default function Index()
     function applyKecermatan(num) {
         return Number(num).toFixed(kecermatan);
     }
+    
+    useEffect(() => {
+        if (errorMsg != "")
+        {
+            document.body.style.overflow = 'hidden';
+        }
+
+        return () => {
+            document.body.style.overflow = 'auto';
+        };
+    }, [errorMsg]);
 
     return (
         <div className="flex flex-col md:gap-8 gap-4 relative">
+            {/* NOTE: Error Pop-up*/}
+            {errorMsg!="" && (
+                <div className="fixed top-0 left-0 w-full h-screen bg-black/20 z-20">
+                    <div className="bg-red-200 px-12 md:px-24 py-12 mx-auto w-fit mt-[32%] md:mt-[12%] text-red-900 rounded-3xl flex flex-col gap-4 items-center text-center shadow-xl border-2 border-t-8 border-red-900">
+                        <img src="/cancel.png" className="w-24 md:w-32 my-6 mx-auto"/>
+                        <p className="text-xl md:text-2xl font-bold -mb-6">ERROR</p>
+                        <p className="text-[0.85rem] md:text-xl">{errorMsg}</p>
+                        <button type="button" className="bg-red-900 text-white hover:bg-white hover:text-red-900 rounded-xl w-full py-2 px-4 font-bold duration-300 ease-in-out transition-colors" onClick={()=> setErrorMsg("")}>ok</button>
+                    </div>
+                </div>
+            )}
 
             {/* NOTE: Floating Chat Button */}
             {regressionResult!=null && (
@@ -124,6 +147,7 @@ export default function Index()
                         setKecermatan={setKecermatan}
                         setTab={setTab}
                         applyKecermatan={applyKecermatan}
+                        setErrorMsg={setErrorMsg}
                     />
                 ))}
 
