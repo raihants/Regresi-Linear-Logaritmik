@@ -179,21 +179,21 @@ export default function HomePage({setTab, setWarningMsg}) {
                     {devPage==0 && (
                         <div className="flex gap-6 m-4 flex-wrap md:flex-nowrap">
                             <div className="bg-white/20 p-6 w-full md:w-1/3 rounded-xl border-white/50 border-2 flex flex-col items-center gap-2 grow">
-                                <img src="/ulwan.jpeg" className="w-16 rounded-full shadow-xl object-cover h-16" />
+                                <img src="/profil/ulwan.jpeg" className="profile" />
                                 <p className="font-bold text-center text-2xl">M ULWAN ZUHDI</p>
                                 <p className="text-xl">Frontend Developer</p>
                                 <p>Bertanggung jawab atas UI/UX dan implementasi React.</p>
                             </div>
 
                             <div className="bg-white/20 p-6 w-full md:w-1/3 rounded-xl border-white/50 border-2 flex flex-col items-center gap-2 grow">
-                                <img src="/profile.jpeg" className="w-16 rounded-full shadow-xl" />
+                                <img src="/profil/shacio.png" className="profile" />
                                 <p className="font-bold text-center text-2xl">MUHAMMAD DIRGAM SHACIO</p>
                                 <p className="text-xl">Data Analyst</p>
                                 <p>Ahli dalam algoritma statistik dan validasi data.</p>
                             </div>
 
                             <div className="bg-white/20 p-6 w-full md:w-1/3 rounded-xl border-white/50 border-2 flex flex-col items-center gap-2 grow">
-                                <img src="/raihan.jpeg" className="w-16 rounded-full shadow-xl object-cover h-16" />
+                                <img src="/profil/raihan.jpeg" className="profile" />
                                 <p className="font-bold text-center text-2xl">RAIHAN TAUFIK SURYANA</p>
                                 <p className="text-xl">Backend Developer</p>
                                 <p>Mengelola Logika bisnis dan optimasi performa</p>
@@ -204,14 +204,14 @@ export default function HomePage({setTab, setWarningMsg}) {
                     {devPage==1 && (
                         <div className="flex gap-6 m-4 flex-wrap md:flex-nowrap md:basis-0">
                             <div className="bg-white/20 p-6 w-1/2 rounded-xl border-white/50 border-2 flex flex-col items-center gap-2 grow">
-                                <img src="/profile.jpeg" className="w-16 rounded-full shadow-xl" />
+                                <img src="/profil/najla.jpeg" className="profile" />
                                 <p className="font-bold text-center text-2xl">NAJLA GHINA NAZHIFA</p>
                                 <p className="text-xl">Frontend Developer</p>
                                 <p>Bertanggung jawab atas UI/UX dan implementasi React.</p>
                             </div>
 
                             <div className="bg-white/20 p-6 w-1/2 rounded-xl border-white/50 border-2 flex flex-col items-center gap-2 grow">
-                                <img src="/profile.jpeg" className="w-16 rounded-full shadow-xl" />
+                                <img src="/profil/nazwa.jpeg" className="profile" />
                                 <p className="font-bold text-center text-2xl">NAZWA AL HADIAH P</p>
                                 <p className="text-xl">Data Analyst</p>
                                 <p>Ahli dalam algoritma statistik dan validasi data.</p>
@@ -223,14 +223,14 @@ export default function HomePage({setTab, setWarningMsg}) {
                     {devPage==2 && (
                         <div className="flex gap-6 m-4 flex-wrap md:flex-nowrap md:basis-0">
                             <div className="bg-white/20 p-6 w-1/2 rounded-xl border-white/50 border-2 flex flex-col items-center gap-2 grow">
-                                <img src="/profile.jpeg" className="w-16 rounded-full shadow-xl" />
+                                <img src="/profil/roofi.jpg" className="profile" />
                                 <p className="font-bold text-center text-2xl">ROOFI AHMAD</p>
                                 <p className="text-xl">Frontend Developer</p>
                                 <p>Bertanggung jawab atas UI/UX dan implementasi React.</p>
                             </div>
 
                             <div className="bg-white/20 p-6 w-1/2 rounded-xl border-white/50 border-2 flex flex-col items-center gap-2 grow">
-                                <img src="/profile.jpeg" className="w-16 rounded-full shadow-xl" />
+                                <img src="/profil/rausyan.jpeg" className="profile" />
                                 <p className="font-bold text-center text-2xl">RAUSYAN FIKRI RUKIN A</p>
                                 <p className="text-xl">Data Analyst</p>
                                 <p>Ahli dalam algoritma statistik dan validasi data.</p>

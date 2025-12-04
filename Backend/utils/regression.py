@@ -103,6 +103,7 @@ def logarithmic_regression(df, preprocessing_report=None, clean_data_report=None
 
     return {
         "model": "logarithmic",
+        "len": n,
         "n": float(n_slope),
         "k": float(k_value),
         "log_k": float(log_k),

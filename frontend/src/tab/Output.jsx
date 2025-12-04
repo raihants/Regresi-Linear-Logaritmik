@@ -1,7 +1,9 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import * as d3 from "d3";
+import TabelHasil from "../components/tabelHasil.jsx";
 
-export default function OutputPage({ regressionResult, colDef, ...props }) {
+export default function OutputPage({ regressionResult, colDef, sessionId, ...props }) {
+    const API_URL = "http://127.0.0.1:8000/api";
     const svgRef = useRef(null);
     const wrapperRef = useRef(null);
     const zoomRef = useRef(null);
@@ -9,7 +11,7 @@ export default function OutputPage({ regressionResult, colDef, ...props }) {
     const [refreshKey, setRefreshKey] = useState(0);
 
     useEffect(() => {
-        if (!wrapperRef.current) return;
+        if (wrapperRef.current == null) return;
 
         const obs = new ResizeObserver(() => {
             setPlotWidth(wrapperRef.current.clientWidth);
@@ -21,6 +23,7 @@ export default function OutputPage({ regressionResult, colDef, ...props }) {
     }, []);
 
     useEffect(() => {
+        if (wrapperRef.current == null) return;
         if (!regressionResult) return;
 
         // prepare data
@@ -296,114 +299,84 @@ export default function OutputPage({ regressionResult, colDef, ...props }) {
         setRefreshKey((k) => k + 1);
     };
 
-    const tableData = useMemo(() => {
-        if (!regressionResult?.cleaned_data) return [];
-        const a = regressionResult.a;
-        const b = regressionResult.b;
-        const isLog = regressionResult.model === "logarithmic";
+    {/* WARN: button export */}
+    const handleExport = async () => {
+        try {
+            const modelType = regressionResult.model;
 
-        return regressionResult.cleaned_data.map((row, i) => {
-            const yPred = isLog ? a + b * Math.log(row.X) : a + b * row.X;
-            const res = row.Y - yPred;
+            const response = await fetch(
+                `${API_URL}/regression/${modelType}/pdf?session_id=${sessionId}`,
+                {
+                    method: "GET",
+                    mode: "cors",
+                    credentials: "include"
+                }
+            );
 
-            return {
-                no: i + 1,
-                X: row.X,
-                Y: row.Y,
-                yPred: yPred,
-                residual: res
-            };
-        });
-    }, [regressionResult]);
+            if (!response.ok) {
+                alert("Gagal export PDF");
+                return;
+            }
+
+            const blob = await response.blob();
+            const url = window.URL.createObjectURL(blob);
+
+            const a = document.createElement("a");
+            a.href = url;
+            a.download = `${modelType}_regression_result.pdf`;
+            a.click();
+
+            window.URL.revokeObjectURL(url);
+
+        } catch (err) {
+            console.error(err);
+            alert("Terjadi error ketika memproses data.");
+        }
+    };
 
     return (
         <div className="w-[90%] md:w-3/4 mx-auto mb-12">
             {regressionResult && (
-                <div className="my-8 border-2 border-t-8 border-primary-dark bg-white rounded-3xl p-8">
-                    <div className="flex justify-between items-center mb-6">
-                        <p className=" text-xl md:text-2xl font-bold">Tabel Hasil Perhitungan Detail</p>
-                    </div>
+                <TabelHasil 
+                    applyKecermatan={props.applyKecermatan}  
+                    regressionResult={regressionResult}
+                    colDef={colDef}
+                />
+            )}
 
-                    <div className="flex text-[0.85rem] md:text-xl overflow-x-auto items-center text-center bg-gray-300">
-                        <div className="w-20 md:w-1/2 p-2 md:p-4">No</div>
-                        <div className="w-20 md:w-full p-2 md:p-4">X</div>
-                        <div className="w-20 md:w-full p-2 md:p-4">Y</div>
-                        <div className="w-20 md:w-full p-2 md:p-4">X²</div>
-                        <div className="w-20 md:w-full p-2 md:p-4">Y²</div>
-                        <div className="w-20 md:w-full p-2 md:p-4">XY</div>
-                        <div className="w-32 md:w-full p-2 md:p-4">Y(Regresi)</div>
-                        <div className="w-20 md:w-full p-2 md:p-4">Residual</div>
-                    </div>
 
-                    {tableData.map(row => (
-                        <div key={row.no} className="flex text-[0.85rem] md:text-xl items-center text-center border-b border-gray-300">
-                            <div className="w-20 md:w-1/2 p-2 md:p-4">{row.no}</div>
-                            <div className="w-20 md:w-full p-2 md:p-4 overflow-x-auto">{props.applyKecermatan(row.X)}</div>
-                            <div className="w-20 md:w-full p-2 md:p-4 overflow-x-auto">{props.applyKecermatan(row.Y)}</div>
-                            <div className="w-20 md:w-full p-2 md:p-4 overflow-x-auto">{props.applyKecermatan(Math.pow(row.X,2))}</div>
-                            <div className="w-20 md:w-full p-2 md:p-4 overflow-x-auto">{props.applyKecermatan(Math.pow(row.Y,2))}</div>
-                            <div className="w-20 md:w-full p-2 md:p-4 overflow-x-auto">{props.applyKecermatan(row.X * row.Y)}</div>
-                            <div className="w-32 md:w-full p-2 md:p-4 overflow-x-auto">{props.applyKecermatan(row.yPred)}</div>
-                            <div className="w-20 md:w-full p-2 md:p-4 overflow-x-auto">{props.applyKecermatan(row.residual)}</div>
+            {regressionResult.model != "logarithmic" && (
+                <div className="bg-white p-8 rounded-3xl shadow-xl flex flex-col border-2 border-t-8 border-secondary my-8">
+                    <div className="w-full justify-between flex items-center mb-4">
+                        <p className="text-xl md:text-2xl font-bold">
+                            Visualisasi Scatter Plot
+                        </p>
+                        <div className="flex gap-2 md:gap-4 text-white font-bold flex-wrap md:flex-nowrap text-[0.75rem] md:text-xl">
+                            <button
+                                onClick={handleResetZoom}
+                                className="p-2 bg-primary rounded-lg hover:bg-success transition-colors duration-300 ease-in-out w-full grow"
+                                type="button"
+                            >
+                                Reset Zoom 
+                            </button>
+                            <button
+                                onClick={handleRefresh}
+                                className="p-2 bg-secondary rounded-lg hover:bg-success transition-colors duration-300 ease-in-out w-full grow"
+                                type="button"
+                            >
+                                Refresh Grafik 
+                            </button>
                         </div>
-                    ))}
-
-                    <div className="text-[0.85rem] md:text-xl items-center text-center border-b border-gray-300 flex font-bold">
-                        <div className="w-20 md:w-1/2 p-2 md:p-4"></div>
-                        <div className="w-20 md:w-full p-2 md:p-4 gradient-text overflow-x-auto">ΣX={props.applyKecermatan(regressionResult.sumX)}</div>
-                        <div className="w-20 md:w-full p-2 md:p-4 gradient-text overflow-x-auto">ΣY={props.applyKecermatan(regressionResult.sumY)}</div>
-                        <div className="w-20 md:w-full p-2 md:p-4 gradient-text overflow-x-auto">ΣX²={props.applyKecermatan(regressionResult.sumX2)}</div>
-                        <div className="w-20 md:w-full p-2 md:p-4 gradient-text overflow-x-auto">ΣY²={props.applyKecermatan(regressionResult.sumY2)}</div>
-                        <div className="w-20 md:w-full p-2 md:p-4 gradient-text overflow-x-auto">ΣXY={props.applyKecermatan(regressionResult.sumXY)}</div>
-                        <div className="w-20 md:w-full p-2 md:p-4 gradient-text"></div>
-                        <div className="w-20 md:w-full p-2 md:p-4 gradient-text"></div>
+                    </div>
+                    <div ref={wrapperRef} className="w-full h-fit relative">
+                        <svg ref={svgRef}></svg>
                     </div>
                 </div>
             )}
 
-
-            <div className="bg-white p-8 rounded-3xl shadow-xl flex flex-col border-2 border-t-8 border-secondary my-8">
-                <div className="w-full justify-between flex items-center mb-4">
-                    <p className="text-xl md:text-2xl font-bold">
-                        Visualisasi Scatter Plot
-                    </p>
-                    <div className="flex gap-2 md:gap-4 text-white font-bold flex-wrap md:flex-nowrap text-[0.75rem] md:text-xl">
-                        <button
-                            onClick={handleResetZoom}
-                            className="p-2 bg-primary rounded-lg hover:bg-success transition-colors duration-300 ease-in-out w-full grow"
-                            type="button"
-                        >
-                            Reset Zoom 
-                        </button>
-                        <button
-                            onClick={handleRefresh}
-                            className="p-2 bg-secondary rounded-lg hover:bg-success transition-colors duration-300 ease-in-out w-full grow"
-                            type="button"
-                        >
-                            Refresh Grafik 
-                        </button>
-                    </div>
-                </div>
-                <div ref={wrapperRef} className="w-full h-fit relative">
-                    <svg ref={svgRef}></svg>
-                </div>
-            </div>
-
-            <div className="bg-white border-success border-2 border-t-8 p-8 shadow-xl rounded-3xl flex my-8 items-center w-full text-xl">
-                <div className="flex flex-col gap-2">
-                    <label for="opsi">Export Hasil Sebagai </label>
-
-                    <select id="opsi" className="bg-linear-to-br from-white to-gray-300 rounded-xl p-2 px-4 border-gray-300 border text-[1rem]">
-                        <option value="png">.png</option>
-                        <option value="png">.jpeg</option>
-                        <option value="pdf">.pdf</option>
-                    </select>
-                </div>
-
-                <button type="button" className="bg-linear-to-br from-primary to-secondary hover:from-secondary hover:to-primary duration-300 ease-in-out transition-colors text-white font-bold text-xl p-4 rounded-xl shadow-md w-[85%] ml-auto">
-                    Export Hasil
-                </button>
-            </div>
+            <button type="button" className="bg-linear-to-br from-primary to-secondary hover:from-secondary hover:to-primary duration-300 ease-in-out transition-colors text-white font-bold text-xl md:text-2xl p-4 rounded-xl shadow-md w-full ml-auto title-font border-secondary border" onClick={handleExport}>
+                Export Hasil
+            </button>
         </div>
     );
 }

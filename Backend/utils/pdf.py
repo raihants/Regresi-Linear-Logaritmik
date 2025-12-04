@@ -1,3 +1,4 @@
+# pdf.py
 from reportlab.pdfgen import canvas
 import pandas as pd
 
@@ -15,11 +16,17 @@ def generate_pdf(df, params, chart_path, model):
     c.setFont("Helvetica", 12)
     c.drawString(50, 795, f"Persamaan: {params['equation']}")
 
-    c.drawImage(chart_path, 50, 450, width=500, height=300)
+    # === Jika bukan logarithmic → tampilkan gambar ===
+    if chart_path:
+        c.drawImage(chart_path, 50, 450, width=500, height=300)
+        y = 420
+    else:
+        # Jika logarithmic: mulai teks lebih atas
+        y = 760
 
     c.setFont("Helvetica-Bold", 12)
-    c.drawString(50, 420, "Preprocessing:")
-    y = 400
+    c.drawString(50, y, "Preprocessing:")
+    y -= 20
 
     c.setFont("Helvetica", 11)
     for step in params["preprocessing_report"]:

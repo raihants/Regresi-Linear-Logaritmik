@@ -47,8 +47,33 @@
 .base-bg-gradient-r {
     @apply bg-linear-to-r from-primary to-secondary; 
 }
+
 .base-bg-gradient-br {
     @apply bg-linear-to-br from-primary to-secondary;
+}
+
+.table-row-num {
+    @apply min-w-6 md:min-w-0 w-1/2 py-2 mx-1 md:py-4 md:mx-2;
+}
+
+.table-row {
+    @apply min-w-1/4 md:min-w-0 w-full py-2 mx-1 md:py-4 md:mx-2 overflow-x-auto;
+}
+
+.table-col-num {
+    @apply min-w-8 md:min-w-0 w-1/2 p-2 md:p-4 bg-gray-300;
+}
+
+.table-col {
+    @apply min-w-21 md:min-w-0 w-full p-2 mx-0 md:p-4 grow bg-gray-300 whitespace-nowrap;
+}
+
+.profile {
+    @apply w-24 h-24 object-cover object-center rounded-full shadow-xl border border-white;
+}
+
+.equation-container {
+    @apply flex flex-col gap-2 p-4 border-warning border-2 rounded-3xl font-bold text-start h-fit;
 }
 
 /* For Chrome, Safari, Edge, and Opera */
