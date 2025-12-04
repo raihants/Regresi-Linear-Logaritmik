@@ -111,7 +111,7 @@ export default function Index()
                 </button>
 
                 <button type="button"
-                    className={`baseTab disabled:text-gray-600 ${tab === 2 ? "selectedTab" : ""}`}
+                    className={`baseTab disabled:text-gray-300 ${tab === 2 ? "selectedTab" : ""}`}
                     disabled={regressionResult==null}
                     onClick={() => setTab(2)}
                 >
@@ -119,7 +119,7 @@ export default function Index()
                 </button>
 
                 <button type="button"
-                    className={`baseTab disabled:text-gray-600 ${tab === 3 ? "selectedTab" : ""}`}
+                    className={`baseTab disabled:text-gray-300 ${tab === 3 ? "selectedTab" : ""}`}
                     disabled={regressionResult==null}
                     onClick={() => setTab(3)}
                 >
