@@ -14,7 +14,7 @@ export default function ProsesPage({ res, kec, ...props }) {
         </div>
     );
     
-    const [rumus, setRumus] = useState("rata");
+    const [rumus, setRumus] = useState("r");
 
     // Hitung statistic dasar
     const stats = useMemo(() => {
@@ -173,86 +173,179 @@ export default function ProsesPage({ res, kec, ...props }) {
                     Rincian Perhitungan
                 </p>
                 <label>Pilih Rumus yang ingin di-rincikan</label>
-                <select className="text-[0.9rem] bg-linear-to-br from-primary to-secondary hover:from-primary hover:to-secondary duration-300 ease-in-out transition-colors text-white font-bold p-6 rounded-3xl" onChange={(e)=> setRumus(e.target.value)}>
-                    <option value="rata">Rata-rata</option>
-                    <option value="r">Koefisien Korelasi (r)</option>
-                    <option value="a">Koefisien a</option>
-                    <option value="b">Koefisien b</option>
-                </select>
-                <div className="flex w-3/4 items-center flex-wrap gap-6 mx-auto">
-                    {rumus=="rata" && (
-                        <div className="flex mx-auto w-fit gap-6">
-                            <div className="equation-container">
-                                <p className="mt-2">Rata-rata (x̄)</p>
-                                <MathJax>
-                                    {`\\[ x̄ = \\frac{ΣX}{n} = \\frac{${kec(res.sumX)}}{${res.len}} = ${kec(stats.avgX)} \\]`}
-                                </MathJax>
-                            </div>
+                {res.model != "logarithmic" ? (
+                    <select className="text-[0.9rem] bg-linear-to-br from-primary to-secondary hover:from-primary hover:to-secondary duration-300 ease-in-out transition-colors text-white font-bold p-6 rounded-3xl" onChange={(e)=> setRumus(e.target.value)}>
+                        <option value="rata">Rata-rata</option>
+                        <option value="r">Koefisien Korelasi (r)</option>
+                        <option value="a">Koefisien a</option>
+                        <option value="b">Koefisien b</option>
+                    </select>
+                ) : (
+                    <select className="text-[0.9rem] bg-linear-to-br from-primary to-secondary hover:from-primary hover:to-secondary duration-300 ease-in-out transition-colors text-white font-bold p-6 rounded-3xl" onChange={(e)=> setRumus(e.target.value)}>
+                        <option value="rata">Rata-rata</option>
+                        <option value="r">Koefisien Korelasi (r)</option>
+                        <option value="n">koefisien n</option>
+                        <option value="k">Koefisien Log(k)</option>
+                    </select>
+                )}
+                <div className="flex w-full md:w-3/4 items-center flex-wrap gap-6 mx-auto text-[0.65rem] md:text-[1rem]">
+                    {res.model != "logarithmic" ? (
+                        <>
+                            {rumus=="rata" && (
+                                <div className="flex mx-auto w-fit gap-6 flex-wrap md:flex-nowrap">
+                                    <div className="equation-container">
+                                        <p className="mt-2">Rata-rata (x̄)</p>
+                                        <MathJax>
+                                            {`\\[ x̄ = \\frac{ΣX}{n} = \\frac{${kec(res.sumX)}}{${res.len}} = ${kec(stats.avgX)} \\]`}
+                                        </MathJax>
+                                    </div>
 
-                            <div className="equation-container">
-                                <p className="mt-2">Rata-rata (ȳ)</p>
-                                <MathJax>
-                                    {`\\[ ȳ = \\frac{ΣY}{n} = \\frac{${kec(res.sumY)}}{${res.len}} = ${kec(stats.avgY)} \\]`}
-                                </MathJax>
-                            </div>
-                        </div>
-                    )}
+                                    <div className="equation-container">
+                                        <p className="mt-2">Rata-rata (ȳ)</p>
+                                        <MathJax>
+                                            {`\\[ ȳ = \\frac{ΣY}{n} = \\frac{${kec(res.sumY)}}{${res.len}} = ${kec(stats.avgY)} \\]`}
+                                        </MathJax>
+                                    </div>
+                                </div>
+                            )}
 
-                    {rumus=="r" && (
-                        <div className="equation-container mx-auto">
-                            <p className="mt-2">Koefisien Korelasi (r)</p>
-                            <MathJax>
-                                {`\\[r = \\frac{(n \\cdot ΣXY)-(ΣX \\cdot ΣY)}{\\sqrt{[(n \\cdot ΣX^2) - (ΣX)^2] \\cdot [(n \\cdot ΣY^2) - (ΣY)^2]}} = \\]`}
-                            </MathJax>
-                            <MathJax>
-                                {`\\[ \\frac{(${res.len} \\cdot ${kec(res.sumXY)})-(${kec(res.sumX)} \\cdot ${kec(res.sumY)})}{\\sqrt{[(${res.len} \\cdot ${kec(res.sumX2)}) - (${kec(res.sumX)})^2] \\cdot [(${res.len} \\cdot ${kec(res.sumY2)}) - (${kec(res.sumY)})^2]}} = \\]`}
-                            </MathJax>
-                            <MathJax>
-                                {`\\[ \\frac{(${kec(res.len * res.sumXY)})-(${kec(res.sumX * res.sumY)})}{\\sqrt{[(${kec(res.len * res.sumX2)}) - ${kec(res.sumX2)}] \\cdot [(${kec(res.len * res.sumY2)}) - ${kec(res.sumY2)}]}} = \\]`}
-                            </MathJax>
-                            <MathJax>
-                                {`\\[ \\frac{${kec((res.len * res.sumXY) - (res.sumX * res.sumY))}}{\\sqrt{(${kec((res.len * res.sumX2) - res.sumX2)}) \\cdot (${kec((res.len * res.sumY2) - res.sumY2)})}} = \\frac{${kec((res.len * res.sumXY) - (res.sumX * res.sumY))}}{\\sqrt{${kec( ((res.len * res.sumX2) - res.sumX2) * ((res.len * res.sumY2) - res.sumY2) )}}} = \\]`}
-                            </MathJax>
-                            <MathJax>
-                                {`\\[ \\frac{${kec((res.len * res.sumXY) - (res.sumX * res.sumY))}}{${kec( Math.sqrt(((res.len * res.sumX2) - res.sumX2) * ((res.len * res.sumY2) - res.sumY2)) )}} = ${kec(res.r)} \\]`}
-                            </MathJax>
-                        </div>
-                    )}
+                            {rumus=="r" && (
+                                <div className="equation-container mx-auto text-[0.5rem] md:text-[1rem]">
+                                    <p className="mt-2">Koefisien Korelasi (r)</p>
+                                    <MathJax>
+                                        {`\\[r = \\frac{(n \\cdot ΣXY)-(ΣX \\cdot ΣY)}{\\sqrt{[(n \\cdot ΣX^2) - (ΣX)^2] \\cdot [(n \\cdot ΣY^2) - (ΣY)^2]}} = \\]`}
+                                    </MathJax>
+                                    <MathJax>
+                                        {`\\[ \\frac{(${res.len} \\cdot ${kec(res.sumXY)})-(${kec(res.sumX)} \\cdot ${kec(res.sumY)})}{\\sqrt{[(${res.len} \\cdot ${kec(res.sumX2)}) - (${kec(res.sumX)})^2] \\cdot [(${res.len} \\cdot ${kec(res.sumY2)}) - (${kec(res.sumY)})^2]}} = \\]`}
+                                    </MathJax>
+                                    <MathJax>
+                                        {`\\[ \\frac{(${kec(res.len * res.sumXY)})-(${kec(res.sumX * res.sumY)})}{\\sqrt{[(${kec(res.len * res.sumX2)}) - ${kec(res.sumX2)}] \\cdot [(${kec(res.len * res.sumY2)}) - ${kec(res.sumY2)}]}} = \\]`}
+                                    </MathJax>
+                                    <MathJax>
+                                        {`\\[ \\frac{${kec((res.len * res.sumXY) - (res.sumX * res.sumY))}}{\\sqrt{(${kec((res.len * res.sumX2) - res.sumX2)}) \\cdot (${kec((res.len * res.sumY2) - res.sumY2)})}} = \\frac{${kec((res.len * res.sumXY) - (res.sumX * res.sumY))}}{\\sqrt{${kec( ((res.len * res.sumX2) - res.sumX2) * ((res.len * res.sumY2) - res.sumY2) )}}} = \\]`}
+                                    </MathJax>
+                                    <MathJax>
+                                        {`\\[ \\frac{${kec((res.len * res.sumXY) - (res.sumX * res.sumY))}}{${kec( Math.sqrt(((res.len * res.sumX2) - res.sumX2) * ((res.len * res.sumY2) - res.sumY2)) )}} = ${kec(res.r)} \\]`}
+                                    </MathJax>
+                                </div>
+                            )}
 
-                    {rumus=="a" && (
-                        <div className="equation-container mx-auto">
-                            <p className="mt-2">Koefisien a</p>
-                            <MathJax>
-                                {`\\[a = \\frac{(ΣY \\cdot ΣX^2)-(ΣX \\cdot ΣXY)}{(n \\cdot ΣX^2) - (ΣX)^2} = \\]`}
-                            </MathJax>
-                            <MathJax>
-                                {`\\[ \\frac{(${kec(res.sumY)} \\cdot ${kec(res.sumX2)})-(${kec(res.sumX)} \\cdot ${kec(res.sumXY)})}{(${res.len} \\cdot ${kec(res.sumX2)}) - (${kec(res.sumX)})^2} = \\]`}
-                            </MathJax>
-                            <MathJax>
-                                {`\\[ \\frac{(${kec(res.sumY * res.sumX2)})-(${kec(res.sumX * res.sumXY)})}{(${kec(res.len * res.sumX2)}) - ${kec(res.sumX2)}} = \\]`}
-                            </MathJax>
-                            <MathJax>
-                                {`\\[ \\frac{${kec( (res.sumY * res.sumX2) - (res.sumX * res.sumXY) )}}{${kec( (res.len * res.sumX2) - res.sumX2)}} = ${kec(res.a)} \\]`}
-                            </MathJax>
-                        </div>
-                    )}
+                            {rumus=="a" && (
+                                <div className="equation-container mx-auto">
+                                    <p className="mt-2">Koefisien a</p>
+                                    <MathJax>
+                                        {`\\[a = \\frac{(ΣY \\cdot ΣX^2)-(ΣX \\cdot ΣXY)}{(n \\cdot ΣX^2) - (ΣX)^2} = \\]`}
+                                    </MathJax>
+                                    <MathJax>
+                                        {`\\[ \\frac{(${kec(res.sumY)} \\cdot ${kec(res.sumX2)})-(${kec(res.sumX)} \\cdot ${kec(res.sumXY)})}{(${res.len} \\cdot ${kec(res.sumX2)}) - (${kec(res.sumX)})^2} = \\]`}
+                                    </MathJax>
+                                    <MathJax>
+                                        {`\\[ \\frac{(${kec(res.sumY * res.sumX2)})-(${kec(res.sumX * res.sumXY)})}{(${kec(res.len * res.sumX2)}) - ${kec(res.sumX2)}} = \\]`}
+                                    </MathJax>
+                                    <MathJax>
+                                        {`\\[ \\frac{${kec( (res.sumY * res.sumX2) - (res.sumX * res.sumXY) )}}{${kec( (res.len * res.sumX2) - res.sumX2)}} = ${kec(res.a)} \\]`}
+                                    </MathJax>
+                                </div>
+                            )}
 
-                    {rumus=="b" && (
-                        <div className="equation-container mx-auto">
-                            <p className="mt-2">Koefisien b</p>
-                            <MathJax>
-                                {`\\[a = \\frac{n \\cdot (ΣXY) - (ΣX \\cdot ΣY)}{(n \\cdot ΣX^2) - (ΣX)^2} = \\]`}
-                            </MathJax>
-                            <MathJax>
-                                {`\\[ \\frac{${res.len} \\cdot (${kec(res.sumXY)}) - (${kec(res.sumX)} \\cdot ${kec(res.sumY)})}{(${res.len} \\cdot ${kec(res.sumX2)}) - (${kec(res.sumX)})^2} = \\]`}
-                            </MathJax>
-                            <MathJax>
-                                {`\\[ \\frac{${kec(res.len * res.sumXY)} - ${kec(res.sumX * res.sumY)}}{${kec(res.len * res.sumX2)} - ${kec(res.sumX2)}} = \\]`}
-                            </MathJax>
-                            <MathJax>
-                                {`\\[ \\frac{${kec( (res.len * res.sumXY) - (res.sumX * res.sumY) )}}{${kec( (res.len * res.sumX2) - res.sumX2 )}} = ${kec(res.b)} \\]`}
-                            </MathJax>
-                        </div>
+                            {rumus=="b" && (
+                                <div className="equation-container mx-auto">
+                                    <p className="mt-2">Koefisien b</p>
+                                    <MathJax>
+                                        {`\\[b = \\frac{n \\cdot (ΣXY) - (ΣX \\cdot ΣY)}{(n \\cdot ΣX^2) - (ΣX)^2} = \\]`}
+                                    </MathJax>
+                                    <MathJax>
+                                        {`\\[ \\frac{${res.len} \\cdot (${kec(res.sumXY)}) - (${kec(res.sumX)} \\cdot ${kec(res.sumY)})}{(${res.len} \\cdot ${kec(res.sumX2)}) - (${kec(res.sumX)})^2} = \\]`}
+                                    </MathJax>
+                                    <MathJax>
+                                        {`\\[ \\frac{${kec(res.len * res.sumXY)} - ${kec(res.sumX * res.sumY)}}{${kec(res.len * res.sumX2)} - ${kec(res.sumX2)}} = \\]`}
+                                    </MathJax>
+                                    <MathJax>
+                                        {`\\[ \\frac{${kec( (res.len * res.sumXY) - (res.sumX * res.sumY) )}}{${kec( (res.len * res.sumX2) - res.sumX2 )}} = ${kec(res.b)} \\]`}
+                                    </MathJax>
+                                </div>
+                            )}
+                        </>
+                    ) : (
+                        <>
+                            {rumus=="rata" && (
+                                <div className="flex mx-auto w-fit gap-6 flex-wrap md:flex-nowrap">
+                                    <div className="equation-container">
+                                        <p className="mt-2">Rata-rata (x̄)</p>
+                                        <MathJax>
+                                            {`\\[ x̄ = \\frac{ΣXi}{n} = \\frac{${kec(res.sumX)}}{${res.len}} = ${kec(stats.avgX)} \\]`}
+                                        </MathJax>
+                                    </div>
+
+                                    <div className="equation-container">
+                                        <p className="mt-2">Rata-rata (ȳ)</p>
+                                        <MathJax>
+                                            {`\\[ ȳ = \\frac{ΣYi}{n} = \\frac{${kec(res.sumY)}}{${res.len}} = ${kec(stats.avgY)} \\]`}
+                                        </MathJax>
+                                    </div>
+                                </div>
+                            )}
+                            {rumus=="r" && (
+                                <div className="equation-container mx-auto text-[0.5rem] md:text-[1rem]">
+                                    <p className="mt-2">Koefisien Korelasi (r)</p>
+                                    <MathJax>
+                                        {`\\[r = \\frac{(n \\cdot ΣXY)-(ΣX \\cdot ΣY)}{\\sqrt{[(n \\cdot ΣX^2) - (ΣX)^2] \\cdot [(n \\cdot ΣY^2) - (ΣY)^2]}} = \\]`}
+                                    </MathJax>
+                                    <MathJax>
+                                        {`\\[ \\frac{(${res.len} \\cdot ${kec(res.sumXY)})-(${kec(res.sumX)} \\cdot ${kec(res.sumY)})}{\\sqrt{[(${res.len} \\cdot ${kec(res.sumX2)}) - (${kec(res.sumX)})^2] \\cdot [(${res.len} \\cdot ${kec(res.sumY2)}) - (${kec(res.sumY)})^2]}} = \\]`}
+                                    </MathJax>
+                                    <MathJax>
+                                        {`\\[ \\frac{(${kec(res.len * res.sumXY)})-(${kec(res.sumX * res.sumY)})}{\\sqrt{[(${kec(res.len * res.sumX2)}) - ${kec(res.sumX2)}] \\cdot [(${kec(res.len * res.sumY2)}) - ${kec(res.sumY2)}]}} = \\]`}
+                                    </MathJax>
+                                    <MathJax>
+                                        {`\\[ \\frac{${kec((res.len * res.sumXY) - (res.sumX * res.sumY))}}{\\sqrt{(${kec((res.len * res.sumX2) - res.sumX2)}) \\cdot (${kec((res.len * res.sumY2) - res.sumY2)})}} = \\frac{${kec((res.len * res.sumXY) - (res.sumX * res.sumY))}}{\\sqrt{${kec( ((res.len * res.sumX2) - res.sumX2) * ((res.len * res.sumY2) - res.sumY2) )}}} = \\]`}
+                                    </MathJax>
+                                    <MathJax>
+                                        {`\\[ \\frac{${kec((res.len * res.sumXY) - (res.sumX * res.sumY))}}{${kec( Math.sqrt(((res.len * res.sumX2) - res.sumX2) * ((res.len * res.sumY2) - res.sumY2)) )}} = ${kec(res.r)} \\]`}
+                                    </MathJax>
+                                </div>
+                            )}
+                            {rumus=="n" && (
+                                <div className="equation-container mx-auto">
+                                    <p className="mt-2">Koefisien n</p>
+                                    <MathJax>
+                                        {`\\[b = \\frac{n \\cdot (ΣXY) - (ΣX \\cdot ΣY)}{(n \\cdot ΣX^2) - (ΣX)^2} = \\]`}
+                                    </MathJax>
+                                    <MathJax>
+                                        {`\\[ \\frac{${res.len} \\cdot (${kec(res.sumXY)}) - (${kec(res.sumX)} \\cdot ${kec(res.sumY)})}{(${res.len} \\cdot ${kec(res.sumX2)}) - (${kec(res.sumX)})^2} = \\]`}
+                                    </MathJax>
+                                    <MathJax>
+                                        {`\\[ \\frac{${kec(res.len * res.sumXY)} - ${kec(res.sumX * res.sumY)}}{${kec(res.len * res.sumX2)} - ${kec(res.sumX2)}} = \\]`}
+                                    </MathJax>
+                                    <MathJax>
+                                        {`\\[ \\frac{${kec( (res.len * res.sumXY) - (res.sumX * res.sumY) )}}{${kec( (res.len * res.sumX2) - res.sumX2 )}} = ${kec(res.n)} \\]`}
+                                    </MathJax>
+                                </div>
+                            )}
+
+                            {rumus=="k" && (
+                                <div className="equation-container mx-auto">
+                                    <p className="mt-2">Koefisien Log(k)</p>
+                                    <MathJax>
+                                        {`\\[A = \\frac{(ΣY \\cdot ΣX^2) - (ΣX \\cdot ΣXY)}{n \\cdot (ΣX^2) - (ΣX)^2} = \\]`}
+                                    </MathJax>
+                                    <MathJax>
+                                        {`\\[\\frac{(${kec(res.sumY)} \\cdot ${kec(res.sumX2)}) - (${kec(res.sumX)} \\cdot ${kec(res.sumXY)})}{${res.len} \\cdot (${kec(res.sumX2)}) - (${kec(res.sumX)})^2} = \\]`}
+                                    </MathJax>
+                                    <MathJax>
+                                        {`\\[\\frac{(${kec(res.sumY * res.sumX2)}) - (${kec(res.sumX * res.sumXY)})}{${kec(res.len * res.sumX2)}) - ${kec(res.sumX2)}} = \\]`}
+                                    </MathJax>
+                                    <MathJax>
+                                        {`\\[\\frac{${kec( (res.sumY * res.sumX2) - (res.sumX * res.sumXY) )}}{${kec( (res.len * res.sumX2) - res.sumX2)}} = ${kec(res.log_k)} \\]`}
+                                    </MathJax>
+
+                                    <MathJax>
+                                        {`\\[ k = 10^{A} = 10^{${kec(res.log_k)}} = ${kec(res.k)} \\]`}
+                                    </MathJax>
+                                </div>
+                            )}
+
+                        </>
                     )}
 
                 </div>

@@ -84,7 +84,7 @@ export default function Index()
 
             {/* Header */}
             <div className="mx-auto mt-12 border-3 border-blue-400 p-8 w-[90%] md:w-3/4 rounded-3xl shadow-xl flex items-center flex-col bg-white">
-                <p className="text-3xl md:text-6xl title-font bg-linear-to-r from-primary to-secondary text-transparent bg-clip-text inline-block text-center">
+                <p className="text-3xl md:text-6xl/24 title-font bg-linear-to-r from-primary to-secondary text-transparent bg-clip-text inline-block text-center">
                     Aplikasi Regresi Linear
                 </p>
                 <p className="text-center text-[0.75rem] md:text-xl">
