@@ -49,7 +49,7 @@ def linear_regression(df, preprocessing_report=""):
         "clean_data_report": clean_data_report,
         "cleaned_data": cleaned_data,
         "details": details,
-        "n" : {n},
+        "len" : {n},
         "sumX" : {sumX},
         "sumY" : {sumY},
         "sumXY" : {sumXY},
@@ -122,6 +122,7 @@ def logarithmic_regression(df, preprocessing_report=""):
 
     return {
         "model": "logarithmic",
+        "len": n_data,
         "n": float(n_slope),
         "k": float(k_value),
         "log_k": float(log_k), # Ini adalah intercept (alpha) pada regresi linear

@@ -164,6 +164,17 @@ export default function ProsesPage({ regressionResult, applyKecermatan, ...props
                 />
             )}
 
+            <div className="w-full p-8 rounded-3xl bg-white flex flex-col my-8 border-2 border-t-8 border-secondary gap-2 md:gap-4">
+                <p className="text-xl md:text-2xl font-bold">
+                    Rincian Perhitungan
+                </p>
+                <div className="flex w-[90%] flex-nowrap">
+                    <div className="flex flex-col p-4">
+                        <p>Rata-rata (x̄)</p>
+                    </div>
+                </div>
+            </div>
+
         </div>
     );
 }
