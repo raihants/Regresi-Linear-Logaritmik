@@ -6,9 +6,9 @@ def linear_regression(df, preprocessing_report=""):
     report = preprocessing_report
 
     clean_data_report = []
-    clean_data_report.append(f"data masuk: {len(df_before)}")
-    clean_data_report.append(f"data tampil: {len(df)}")
-    clean_data_report.append(f"data hapus: {len(df_before) - len(df)}")
+    clean_data_report.append(f"Total Data yang terbaca: {len(df_before)}")
+    clean_data_report.append(f"Total Data setelah dibersihkan: {len(df)}")
+    clean_data_report.append(f"Total Data yang dihapus: {len(df_before) - len(df)}")
 
     cleaned_data = df.to_dict(orient="records")
 
@@ -65,9 +65,9 @@ def logarithmic_regression(df, preprocessing_report=""):
     report = preprocessing_report
 
     clean_data_report = []
-    clean_data_report.append(f"data masuk: {len(df_before)}")
-    clean_data_report.append(f"data tampil: {len(df)}")
-    clean_data_report.append(f"data hapus: {len(df_before) - len(df)}")
+    clean_data_report.append(f"Total Data yang terbaca: {len(df_before)}")
+    clean_data_report.append(f"Total Data setelah dibersihkan: {len(df)}")
+    clean_data_report.append(f"Total Data yang dihapus: {len(df_before) - len(df)}")
 
     cleaned_data = df.to_dict(orient="records")
 
