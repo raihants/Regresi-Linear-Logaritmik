@@ -176,7 +176,7 @@ export default function ProsesPage({ sessionId, setRegressionResult, regressionR
                                 {regressionResult.model === "logarithmic" ? (
                                     <>
                                         <p>Intercept (koefisien log k)</p>
-                                        <p className="text-secondary font-bold">{applyKecermatan(regressionResult.log_k)}</p>
+                                        <p className="text-secondary font-bold">{applyKecermatan(regressionResult.k)}</p>
                                     </>
                                 ) : (
                                     <>
