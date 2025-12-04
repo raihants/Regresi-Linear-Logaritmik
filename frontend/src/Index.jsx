@@ -9,7 +9,7 @@ export default function Index()
 {
     const [tab, setTab] = useState(0);
     const [warningMsg, setWarningMsg] = useState("");
-    const [errorMsg, setErrorMsg] = useState("you got mail");
+    const [errorMsg, setErrorMsg] = useState("");
 
     // Data & Backend
     const [rowData, setRowData] = useState([{ x: 0, y: 0, xEdit:null, yEdit:null }]);
@@ -154,11 +154,11 @@ export default function Index()
                 {(tab === 2 && (
                     <ProsesPage
                         sessionId={sessionId}
-                        regressionResult={regressionResult}
+                        res={regressionResult}
                         setRegressionResult={setRegressionResult}
                         kecermatan={kecermatan}
                         setKecermatan={setKecermatan}
-                        applyKecermatan={applyKecermatan}
+                        kec={applyKecermatan}
                         setTab={setTab}
                         colDef={colDef}
                     />
