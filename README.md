@@ -10,6 +10,7 @@ untuk backend buka terminal baru
 lalu run command dibawah
 ```
 cd Backend
+pip install -r requirements.txt
 python -m venv venv
 uvicorn main:app --reload
 ```
