@@ -1,10 +1,9 @@
 import { useEffect, useRef, useState } from 'react';
 import Papa from "papaparse";
 import * as XLSX from "xlsx";
+import KecermatanSettings from '../components/kecermatanSettings.jsx';
 
-export default function InputPage({ rowData, setRowData, setRegressionResult, setSessionId, warningMsg, setWarningMsg, kecermatan, setKecermatan, setTab, ...props }) {
-    const [colDef, setColDef] = useState({ x: "Nilai X", y: "Nilai Y" });
-    const [modelType, setModelType] = useState("linear");
+export default function InputPage({ rowData, setRowData, setRegressionResult, setSessionId, warningMsg, setWarningMsg, kecermatan, setKecermatan, setTab, colDef, setColDef, modelType, setModelType, ...props }) {
     const API_URL = "http://127.0.0.1:8000/api";
     const fileRef = useRef(null);
 
@@ -205,32 +204,7 @@ export default function InputPage({ rowData, setRowData, setRegressionResult, se
                                 <p>{"( 0." + "0".repeat(kecermatan) + " )"}</p>
                             </div>
                             <div className='rounded-xl py-2 px-4 bg-white shadow-xl w-fit'>
-                                <button 
-                                    type='button' 
-                                    className='disabled:text-gray-300'
-                                    onClick={()=> setKecermatan(Number(kecermatan)-1)}
-                                    disabled={kecermatan<=0}
-                                >
-                                    <i className='bi bi-caret-left-fill' />
-                                </button>
-
-                                <input 
-                                    type="number" 
-                                    className='w-20 text-center border rounded-xl' 
-                                    value={kecermatan} 
-                                    onChange={(e)=> {
-                                        setKecermatan(Math.abs(Number(e.target.value))); 
-                                    }} 
-                                />
-
-                                <button 
-                                    type='button' 
-                                    className='disabled:text-gray-300'
-                                    onClick={()=> setKecermatan(Number(kecermatan)+1)}
-                                    disabled={kecermatan>=16}
-                                >
-                                    <i className='bi bi-caret-right-fill' />
-                                </button>
+                                <KecermatanSettings kecermatan={kecermatan} setKecermatan={setKecermatan} />
                             </div>
                         </div>
                     </div>
@@ -352,7 +326,7 @@ export default function InputPage({ rowData, setRowData, setRegressionResult, se
                     <div className="bg-white flex flex-col rounded-3xl p-4 px-8 shadow-xl border-2 border-success border-t-8" onDragOver={handleDragOver} onDrop={handleDrop}>
                         <div className="flex items-center gap-2">
                             <i className="bi bi-filetype-csv text-white bg-success py-2 px-3 text-xl rounded-xl"/>
-                            <p className="font-bold text-xl md:text-2xl">Import File CSV </p>
+                            <p className="font-bold text-xl md:text-2xl">Import File CSV / XLSX </p>
                         </div>
 
                         <div className='mx-auto mt-16 mb-8 hidden md:flex flex-col items-center text-center' onClick={handleInputFunction}>
@@ -373,7 +347,7 @@ export default function InputPage({ rowData, setRowData, setRegressionResult, se
                             onClick={handleInputFunction}
                             className="w-full bg-success text-white text-xl font-bold py-2 rounded-xl shadow mt-4"
                             type="button"
-                        >Pilih File CSV</button>
+                        >Pilih File CSV / XLSX</button>
                     </div>
 
                     <div className='bg-[#AEDEFC] p-4 rounded-3xl text-primary-dark border-primary-dark border-2 text-[0.85rem] md:text-xl'>

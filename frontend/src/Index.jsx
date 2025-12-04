@@ -12,6 +12,8 @@ export default function Index()
 
     // Data & Backend
     const [rowData, setRowData] = useState([{ x: 0, y: 0, xEdit:null, yEdit:null }]);
+    const [colDef, setColDef] = useState({ x: "Nilai X", y: "Nilai Y" });
+    const [modelType, setModelType] = useState("linear");
     const [sessionId, setSessionId] = useState(null);
     const [regressionResult, setRegressionResult] = useState(null);
     const [kecermatan, setKecermatan] = useState(4);
@@ -76,14 +78,16 @@ export default function Index()
                 </button>
 
                 <button type="button"
-                    className={`baseTab ${tab === 2 ? "selectedTab" : ""}`}
+                    className={`baseTab disabled:text-gray-600 ${tab === 2 ? "selectedTab" : ""}`}
+                    disabled={regressionResult==null}
                     onClick={() => setTab(2)}
                 >
                     <i className="bi bi-calculator mx-1"/> Proses & Hasil
                 </button>
 
                 <button type="button"
-                    className={`baseTab ${tab === 3 ? "selectedTab" : ""}`}
+                    className={`baseTab disabled:text-gray-600 ${tab === 3 ? "selectedTab" : ""}`}
+                    disabled={regressionResult==null}
                     onClick={() => setTab(3)}
                 >
                     <i className="bi bi-graph-up mx-1"/> Visualisasi & Export
@@ -102,6 +106,10 @@ export default function Index()
                         setRegressionResult={setRegressionResult}
                         warningMsg={warningMsg}
                         setWarningMsg={setWarningMsg}
+                        colDef={colDef}
+                        setColDef={setColDef}
+                        modelType={modelType}
+                        setModelType={setModelType}
                         kecermatan={kecermatan}
                         setKecermatan={setKecermatan}
                         setTab={setTab}
@@ -115,12 +123,18 @@ export default function Index()
                         regressionResult={regressionResult}
                         setRegressionResult={setRegressionResult}
                         kecermatan={kecermatan}
+                        setKecermatan={setKecermatan}
                         applyKecermatan={applyKecermatan}
+                        setTab={setTab}
                     />
                 ))}
 
                 {(tab === 3 && (
-                    <OutputPage regressionResult={regressionResult} />
+                    <OutputPage 
+                        regressionResult={regressionResult}  
+                        colDef={colDef}
+                        applyKecermatan={applyKecermatan}
+                    />
                 ))}
             </div>
 

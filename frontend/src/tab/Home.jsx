@@ -23,14 +23,14 @@ export default function HomePage({setTab, setWarningMsg}) {
     return(
         <div className="w-[90%] md:w-3/4 mx-auto flex flex-col gap-8 mb-12">
             <div className="base-bg-gradient-r text-white mx-auto w-full p-8 rounded-3xl flex flex-col relative items-center gap-4 py-20 shadow-xl">
-                <p className="text-4xl md:text-6xl title-font text-center">Analisis Regresi Linear</p>
+                <p className="text-5xl md:text-6xl title-font text-center">Analisis Regresi</p>
                 <p className="text-[1rem] md:text-xl w-2/3 text-center">Alat Analisis Data yang mudah digunakan untuk menghitung dan memvisualisasikan hubungan linear antara dua variabel dengan antarmuka yang modern dan intuitif</p>
                 <div className="flex gap-6 flex-wrap items-center">
                     {/* NOTE: Start Button and Info Button */}
-                    <button type="button" className="bg-linear-to-r from-primary to-secondary hover:from-secondary hover:to-primary shadow-xl py-2 px-6 rounded-lg transition-colors duration-600 ease-in-out mx-auto">
+                    <button type="button" className="bg-linear-to-r from-primary to-secondary hover:from-secondary hover:to-primary shadow-xl py-2 px-6 rounded-lg transition-colors duration-600 ease-in-out mx-auto" onClick={()=> { setTab(1); window.scrollTo(0, 0); }}>
                         <i className="bi bi-play-fill mx-1" />Mulai Analisis</button>
-                    <button type="button" className="bg-white/30 shadow-xl py-2 px-6 rounded-lg border-white border-2 hover:bg-white/60 transition-colors duration-600 ease-in-out mx-auto">
-                        <i className="bi bi-info-circle-fill mx-1"/>Pelajari Lebih Lanjut</button>
+                    <a type="button" className="bg-white/30 shadow-xl py-2 px-6 rounded-lg border-white border-2 hover:bg-white/60 transition-colors duration-600 ease-in-out mx-auto" href="https://id.wikipedia.org/wiki/Analisis_regresi">
+                        <i className="bi bi-info-circle-fill mx-1"/>Pelajari Lebih Lanjut</a>
                 </div>
             </div>
 

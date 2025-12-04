@@ -32,6 +32,10 @@
     --color-gray-800: #1f2937;
 }
 
+.gradient-text {
+    @apply bg-linear-to-r from-primary to-secondary text-transparent bg-clip-text inline-block;
+}
+
 .selectedTab {
     @apply bg-linear-to-r from-primary to-secondary text-white py-2;
 }

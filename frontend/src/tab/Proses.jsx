@@ -1,6 +1,8 @@
 import { useState, useMemo } from "react";
+import KecermatanSettings from "../components/kecermatanSettings.jsx";
+import TabelHasil from "../components/tabelHasil.jsx";
 
-export default function ProsesPage({ sessionId, setRegressionResult, regressionResult, applyKecermatan }) {
+export default function ProsesPage({ sessionId, setRegressionResult, regressionResult, applyKecermatan, ...props }) {
     const [loading, setLoading] = useState(false);
 
     const runRegression = async () => {
@@ -51,15 +53,47 @@ export default function ProsesPage({ sessionId, setRegressionResult, regressionR
         const isLog = regressionResult.model === "logarithmic";
 
         return regressionResult.cleaned_data.map((row, i) => {
-            const yPred = isLog ? a + b * Math.log(row.X) : a + b * row.X;
-            const res = row.Y - yPred;
+            const X = Number(row.X);
+            const Y = Number(row.Y);
+
+            // force-fix ANY non-number into 0
+            const safeX = Number.isFinite(X) ? X : 0;
+            const safeY = Number.isFinite(Y) ? Y : 0;
+
+            console.log("safeX : " + safeX, typeof safeX);
+            console.log("safeY : " + safeY, typeof safeY);
+
+            // force logs to never be NaN
+            const xlog = isLog && safeX > 0 ? Math.log(safeX) : 0;
+            const ylog = isLog && safeY > 0 ? Math.log(safeY) : 0;
+
+            console.log("xlog : " + xlog, typeof xlog);
+            console.log("ylog : " + ylog, typeof ylog);
+
+            // force prediction to never be NaN
+            const A = Number.isFinite(Number(a)) ? Number(a) : 0;
+            const B = Number.isFinite(Number(b)) ? Number(b) : 0;
+
+            console.log("A : " +  A, typeof A);
+            console.log("B : " + B, typeof B);
+
+            const yPred = isLog ? A + B * xlog : A + B * safeX;
+
+            console.log("yPred : " + yPred, typeof yPred);
+
+            // force residual to never be NaN
+            const residual = safeY - yPred;
+
+            console.log("residual : " + residual, typeof residual);
 
             return {
                 no: i + 1,
-                X: row.X,
-                Y: row.Y,
-                yPred: yPred.toFixed(5),
-                residual: res.toFixed(5)
+                X: safeX,
+                Y: safeY,
+                xlog,
+                ylog,
+                yPred,
+                residual,
             };
         });
     }, [regressionResult]);
@@ -71,7 +105,7 @@ export default function ProsesPage({ sessionId, setRegressionResult, regressionR
             <div className="bg-white rounded-3xl border-2 border-secondary border-t-8 p-8 w-full shadow-xl flex flex-col">
                 <p className="text-xl md:text-2xl font-bold">Preprocessing Data</p>
 
-                {regressionResult?.clean_data_report?.map((rep, i) =>
+                {regressionResult?.clean_data_report?.map((rep, _i) =>
                     debugMessage(rep.split(":")[0], rep.split(":")[1] || "")
                 )}
 
@@ -101,7 +135,7 @@ export default function ProsesPage({ sessionId, setRegressionResult, regressionR
                     {/* Statistik Dasar */}
                     <div className="bg-white rounded-3xl p-8 border-t-8 border-2 shadow-xl border-primary w-full">
                         <p className="text-xl md:text-2xl font-bold">Statistik Dasar</p>
-                        <div className="flex flex-col my-4 md:my-8 text-[0.85rem] md:text-xl gap-4 md:gap-8 w-5/6 mx-auto">
+                        <div className="flex flex-col my-4 md:my-16 text-[0.85rem] md:text-xl gap-4 md:gap-8 w-5/6 mx-auto">
                             <div className="flex justify-between">
                                 <p>Rata-rata X (x̄)</p>
                                 <p className="text-primary font-bold">{applyKecermatan(stats?.avgX)}</p>
@@ -112,18 +146,6 @@ export default function ProsesPage({ sessionId, setRegressionResult, regressionR
                                 <p className="text-primary font-bold">{applyKecermatan(stats?.avgY)}</p>
                             </div>
 
-                            <div className="flex justify-between">
-                                <p>{regressionResult.details[1]}</p>
-                            </div>
-                            <div className="flex justify-between">
-                                <p>{regressionResult.details[2]}</p>
-                            </div>
-                            <div className="flex justify-between">
-                                <p>{regressionResult.details[3]}</p>
-                            </div>
-                            <div className="flex justify-between">
-                                <p>{regressionResult.details[4]}</p>
-                            </div>
                         </div>
                     </div>
 
@@ -133,17 +155,36 @@ export default function ProsesPage({ sessionId, setRegressionResult, regressionR
                         <div className="flex flex-col my-4 md:my-8 text-[0.85rem] md:text-xl gap-4 md:gap-8 w-5/6 mx-auto">
                             <div className="flex justify-between">
                                 <p>Koefisien Korelasi</p>
-                                <p className="text-secondary font-bold">{applyKecermatan(1)}</p>
+                                <p className="text-secondary font-bold">{applyKecermatan(regressionResult.r)}</p>
                             </div>
 
                             <div className="flex justify-between">
-                                <p>Intercept (koefisien a)</p>
-                                <p className="text-secondary font-bold">{applyKecermatan(regressionResult.a)}</p>
+                                {regressionResult.model === "logarithmic" ? (
+                                    <>
+                                        <p>Intercept (koefisien n)</p>
+                                        <p className="text-secondary font-bold">{applyKecermatan(regressionResult.n)}</p>
+                                    </>
+                                ) : (
+                                    <>
+                                        <p>Intercept (koefisien a)</p>
+                                        <p className="text-secondary font-bold">{applyKecermatan(regressionResult.a)}</p>
+                                    </>
+                                )}
                             </div>
 
                             <div className="flex justify-between">
-                                <p>Slope (koefisien b)</p>
-                                <p className="text-secondary font-bold">{applyKecermatan(regressionResult.b)}</p>
+                                {regressionResult.model === "logarithmic" ? (
+                                    <>
+                                        <p>Intercept (koefisien log k)</p>
+                                        <p className="text-secondary font-bold">{applyKecermatan(regressionResult.log_k)}</p>
+                                    </>
+                                ) : (
+                                    <>
+                                        <p>Intercept (koefisien b)</p>
+                                        <p className="text-secondary font-bold">{applyKecermatan(regressionResult.b)}</p>
+                                    </>
+                                )}
+
                             </div>
                         </div>
                     </div>
@@ -159,7 +200,7 @@ export default function ProsesPage({ sessionId, setRegressionResult, regressionR
 
                     <div className="bg-white p-6 flex flex-col gap-0 md:gap-4 text-center items-center rounded-3xl w-full">
                         <p className="text-2xl md:text-4xl title-font bg-linear-to-r from-primary to-secondary text-transparent bg-clip-text inline-block">
-                            Y = {applyKecermatan(regressionResult.equation.match(/-?\d+(\.\d+)?/g)[0])} + {applyKecermatan(regressionResult.equation.match(/-?\d+(\.\d+)?/g)[1])}X
+                            Y = {applyKecermatan(regressionResult.equation?.match(/-?\d+(\.\d+)?/g)[0])} + {applyKecermatan(regressionResult.equation?.match(/-?\d+(\.\d+)?/g)[1])}X
                         </p>
 
                         <p className="text-2xl md:text-4xl title-font bg-linear-to-r from-primary to-secondary text-transparent bg-clip-text inline-block">
@@ -170,6 +211,7 @@ export default function ProsesPage({ sessionId, setRegressionResult, regressionR
                     <button
                         className="bg-success text-white font-bold text-[0.85rem] md:text-xl p-2 md:p-4 rounded-xl w-full my-4 md:my-8 shadow-[0_0_16px] shadow-success/50"
                         type="button"
+                        onClick={()=> { props.setTab(3); window.scrollTo(0, 0); }}
                     >
                         <i className="bi bi-graph-up mr-1" />Lanjut ke Visualisasi
                     </button>
@@ -179,25 +221,13 @@ export default function ProsesPage({ sessionId, setRegressionResult, regressionR
             {/* NOTE: TABEL DETAIL */}
             {regressionResult && (
                 <div className="my-8 border-2 border-t-8 border-primary-dark bg-white rounded-3xl p-8">
-                    <p className="mb-6 text-xl md:text-2xl font-bold">Tabel Hasil Perhitungan Detail</p>
-
-                    <div className="flex text-[0.85rem] md:text-xl overflow-x-auto items-center text-center bg-gray-300">
-                        <div className="w-20 md:w-1/2 p-2 md:p-4">No</div>
-                        <div className="w-20 md:w-full p-2 md:p-4">X</div>
-                        <div className="w-20 md:w-full p-2 md:p-4">Y</div>
-                        <div className="w-32 md:w-full p-2 md:p-4">Y Prediksi</div>
-                        <div className="w-20 md:w-full p-2 md:p-4">Residual</div>
-                    </div>
-
-                    {tableData.map(row => (
-                        <div key={row.no} className="flex text-[0.85rem] md:text-xl items-center text-center border-b border-gray-300">
-                            <div className="w-20 md:w-1/2 p-2 md:p-4">{row.no}</div>
-                            <div className="w-20 md:w-full p-2 md:p-4">{applyKecermatan(row.X)}</div>
-                            <div className="w-20 md:w-full p-2 md:p-4">{applyKecermatan(row.Y)}</div>
-                            <div className="w-32 md:w-full p-2 md:p-4">{applyKecermatan(row.yPred)}</div>
-                            <div className="w-20 md:w-full p-2 md:p-4">{applyKecermatan(row.residual)}</div>
-                        </div>
-                    ))}
+                    <TabelHasil 
+                        applyKecermatan={applyKecermatan}  
+                        tableData={tableData}
+                        regressionResult={regressionResult}
+                        kecermatan={props.kecermatan}
+                        setKecermatan={props.setKecermatan}
+                    />
                 </div>
             )}
         </div>

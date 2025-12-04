@@ -27,6 +27,7 @@ def linear_regression(df, preprocessing_report=""):
     a = (sumY - (b * sumX)) / n
 
     r = ((n * sumXY) - (sumX * sumY)) / (np.sqrt((n * sumX2 - sumX**2) * (n * sumY2 - sumY**2)))
+    r2 = r**2
     
     details = [
         f"n = {n}",
@@ -48,7 +49,14 @@ def linear_regression(df, preprocessing_report=""):
         "clean_data_report": clean_data_report,
         "cleaned_data": cleaned_data,
         "details": details,
-        "r": float(r)
+        "n" : {n},
+        "sumX" : {sumX},
+        "sumY" : {sumY},
+        "sumXY" : {sumXY},
+        "sumX2" : {sumX2},
+        "sumY2" : {sumY2},
+        "r": float(r),
+        "r2": float(r2)
     }
 
 
@@ -113,18 +121,25 @@ def logarithmic_regression(df, preprocessing_report=""):
     ]
 
     return {
-        "model": "Logarithmic Power Law",
+        "model": "logarithmic",
         "n": float(n_slope),
         "k": float(k_value),
         "log_k": float(log_k), # Ini adalah intercept (alpha) pada regresi linear
         
         # Output dua string persamaan agar bisa dipilih
-        "equation_linear": f"Log(Y) = {log_k:.4f} + {n_slope:.4f} * Log(X)",
+        "equation": f"Log(Y) = {log_k:.4f} + {n_slope:.4f} * Log(X)",
         "equation_power": f"Y = {k_value:.4f} * X^{n_slope:.4f}",
         
         "preprocessing_report": report,
         "clean_data_report": clean_data_report,
         "cleaned_data": cleaned_data,
         "details": details,
-        "r2": float(r2)
+        "r2": float(r2),
+        "sumX" : {sum_logX},
+        "sumY" : {sum_logY},
+        "sumXY" : {sum_logXY},
+        "sumX2" : {sum_logX2},
+        "sumY2" : {sum_logY2},
+        "r": float(r)
+
     }
