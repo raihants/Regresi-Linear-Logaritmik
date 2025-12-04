@@ -10,7 +10,7 @@ export default function OutputPage({ regressionResult, colDef, ...props }) {
     const [refreshKey, setRefreshKey] = useState(0);
 
     useEffect(() => {
-        if (!wrapperRef.current) return;
+        if (wrapperRef.current == null) return;
 
         const obs = new ResizeObserver(() => {
             setPlotWidth(wrapperRef.current.clientWidth);
@@ -22,6 +22,7 @@ export default function OutputPage({ regressionResult, colDef, ...props }) {
     }, []);
 
     useEffect(() => {
+        if (wrapperRef.current == null) return;
         if (!regressionResult) return;
 
         // prepare data
