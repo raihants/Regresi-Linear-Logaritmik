@@ -11,6 +11,7 @@ from utils.pdf import generate_pdf
 router = APIRouter()
 UPLOAD_DIR = "uploads/"
 
+
 def load_session_file(session_id: str):
     csv_path = os.path.join(UPLOAD_DIR, f"{session_id}.csv")
     xlsx_path = os.path.join(UPLOAD_DIR, f"{session_id}.xlsx")
@@ -18,7 +19,7 @@ def load_session_file(session_id: str):
     if os.path.exists(csv_path):
         try:
             return pd.read_csv(csv_path)
-        except:
+        except Exception:
             return pd.read_csv(csv_path, encoding="latin1")
 
     if os.path.exists(xlsx_path):
@@ -30,26 +31,28 @@ def load_session_file(session_id: str):
 @router.get("/linear")
 def linear(session_id: str):
     df_raw = load_session_file(session_id)
-    df_clean, report = preprocess_data(df_raw, model="linear")
-    result = linear_regression(df_clean, report)
+    df_clean, report, clean_data_report = preprocess_data(df_raw, model="linear")
+
+    result = linear_regression(df_clean, report, clean_data_report)
     return result
 
 
 @router.get("/logarithmic")
 def logaritmik(session_id: str):
     df_raw = load_session_file(session_id)
-    df_clean, report = preprocess_data(df_raw, model="logarithmic")
-    result = logarithmic_regression(df_clean, report)
+    df_clean, report, clean_data_report = preprocess_data(df_raw, model="logarithmic")
+
+    result = logarithmic_regression(df_clean, report, clean_data_report)
     return result
 
 
 @router.get("/linear/pdf")
 def linear_pdf(session_id: str):
     df_raw = load_session_file(session_id)
-    df_clean, report = preprocess_data(df_raw, model="linear")
-    result = linear_regression(df_clean, report)
+    df_clean, report, clean_data_report = preprocess_data(df_raw, model="linear")
 
-    # gunakan df_clean (DataFrame)
+    result = linear_regression(df_clean, report, clean_data_report)
+
     img_path = generate_chart(df_clean, result, "linear")
     pdf_path = generate_pdf(df_clean, result, img_path, "linear")
 
@@ -63,8 +66,9 @@ def linear_pdf(session_id: str):
 @router.get("/logarithmic/pdf")
 def log_pdf(session_id: str):
     df_raw = load_session_file(session_id)
-    df_clean, report = preprocess_data(df_raw, model="logarithmic")
-    result = logarithmic_regression(df_clean, report)
+    df_clean, report, clean_data_report = preprocess_data(df_raw, model="logarithmic")
+
+    result = logarithmic_regression(df_clean, report, clean_data_report)
 
     img_path = generate_chart(df_clean, result, "logarithmic")
     pdf_path = generate_pdf(df_clean, result, img_path, "logarithmic")

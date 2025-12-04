@@ -1,6 +1,11 @@
 import numpy as np
 
-def linear_regression(df, preprocessing_report="", clean_data_report=[]):
+def linear_regression(df, preprocessing_report=None, clean_data_report=None):
+    if preprocessing_report is None:
+        preprocessing_report = []
+    if clean_data_report is None:
+        clean_data_report = []
+
     cleaned_data = df.to_dict(orient="records")
 
     X = df["X"]
@@ -50,7 +55,12 @@ def linear_regression(df, preprocessing_report="", clean_data_report=[]):
     }
 
 
-def logarithmic_regression(df, preprocessing_report="", clean_data_report=[]):
+def logarithmic_regression(df, preprocessing_report=None, clean_data_report=None):
+    if preprocessing_report is None:
+        preprocessing_report = []
+    if clean_data_report is None:
+        clean_data_report = []
+
     cleaned_data = df.to_dict(orient="records")
 
     X = df["X"]
@@ -110,4 +120,3 @@ def logarithmic_regression(df, preprocessing_report="", clean_data_report=[]):
         "sumX2": float(sum_logX2),
         "sumY2": float(sum_logY2)
     }
-
