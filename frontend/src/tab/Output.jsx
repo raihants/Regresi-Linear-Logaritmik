@@ -303,12 +303,31 @@ export default function OutputPage({ regressionResult, colDef, sessionId, ...pro
     const handleExport = async () => {
         try {
             const modelType = regressionResult.model;
-            const regResp = await fetch(`${API_URL}/regression/${modelType}/pdf?session_id=${sessionId}`);
-            const regResult = await regResp.json();
-            if (!regResp.ok) {
-                alert(regResult.detail || "Gagal menghitung regresi");
+
+            const response = await fetch(
+                `${API_URL}/regression/${modelType}/pdf?session_id=${sessionId}`,
+                {
+                    method: "GET",
+                    mode: "cors",
+                    credentials: "include"
+                }
+            );
+
+            if (!response.ok) {
+                alert("Gagal export PDF");
                 return;
             }
+
+            const blob = await response.blob();
+            const url = window.URL.createObjectURL(blob);
+
+            const a = document.createElement("a");
+            a.href = url;
+            a.download = `${modelType}_regression_result.pdf`;
+            a.click();
+
+            window.URL.revokeObjectURL(url);
+
         } catch (err) {
             console.error(err);
             alert("Terjadi error ketika memproses data.");

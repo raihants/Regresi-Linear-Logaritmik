@@ -1,9 +1,14 @@
+# chart.py
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import os
 
 def generate_chart(df, params, model):
+    # Jika model logarithmic → TIDAK membuat grafik
+    if model == "logarithmic":
+        return None   # important
+
     # Convert df jika masih berupa list of dict
     if not isinstance(df, pd.DataFrame):
         df = pd.DataFrame(df)
@@ -18,11 +23,8 @@ def generate_chart(df, params, model):
 
     plt.scatter(X, Y)
 
-    if model == "linear":
-        y_pred = a + b * X
-    elif model == "logarithmic":
-        y_pred = a + b * np.log(X)
-
+    # Grafik hanya untuk linear
+    y_pred = a + b * X
     plt.plot(X, y_pred)
 
     path = f"uploads/{model}_chart.png"

@@ -49,15 +49,21 @@ def linear_pdf(session_id: str):
     df_clean, report = preprocess_data(df_raw, model="linear")
     result = linear_regression(df_clean, report)
 
-    # gunakan df_clean (DataFrame)
     img_path = generate_chart(df_clean, result, "linear")
     pdf_path = generate_pdf(df_clean, result, img_path, "linear")
 
-    return FileResponse(
+    response = FileResponse(
         pdf_path,
         media_type="application/pdf",
         filename="linear_regression_result.pdf"
     )
+
+    # Tambah header CORS
+    response.headers["Access-Control-Allow-Origin"] = "http://localhost:5173"
+    response.headers["Access-Control-Allow-Credentials"] = "true"
+
+    return response
+
 
 
 @router.get("/logarithmic/pdf")
@@ -69,8 +75,15 @@ def log_pdf(session_id: str):
     img_path = generate_chart(df_clean, result, "logarithmic")
     pdf_path = generate_pdf(df_clean, result, img_path, "logarithmic")
 
-    return FileResponse(
+    response = FileResponse(
         pdf_path,
         media_type="application/pdf",
         filename="logarithmic_regression_result.pdf"
     )
+
+    # Tambah header CORS
+    response.headers["Access-Control-Allow-Origin"] = "http://localhost:5173"
+    response.headers["Access-Control-Allow-Credentials"] = "true"
+
+    return response
+
