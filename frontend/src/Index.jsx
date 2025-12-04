@@ -126,6 +126,7 @@ export default function Index()
                         setKecermatan={setKecermatan}
                         applyKecermatan={applyKecermatan}
                         setTab={setTab}
+                        colDef={colDef}
                     />
                 ))}
 

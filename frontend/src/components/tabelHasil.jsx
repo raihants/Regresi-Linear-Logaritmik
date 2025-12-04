@@ -1,8 +1,61 @@
+import { useMemo } from "react";
 import KecermatanSettings from "./kecermatanSettings.jsx";
 
-export default function TabelHasil({ applyKecermatan, regressionResult, tableData, ...props }) {
+export default function TabelHasil({ applyKecermatan, regressionResult, colDef, ...props }) {
+    const tableData = useMemo(() => {
+        if (!regressionResult?.cleaned_data) return [];
+        const a = regressionResult.a;
+        const b = regressionResult.b;
+        const isLog = regressionResult.model === "logarithmic";
+
+        return regressionResult.cleaned_data.map((row, i) => {
+            const X = Number(row.X);
+            const Y = Number(row.Y);
+
+            // force-fix ANY non-number into 0
+            const safeX = Number.isFinite(X) ? X : 0;
+            const safeY = Number.isFinite(Y) ? Y : 0;
+
+            //console.log("safeX : " + safeX, typeof safeX);
+            //console.log("safeY : " + safeY, typeof safeY);
+
+            // force logs to never be NaN
+            const xlog = isLog && safeX > 0 ? Math.log10(safeX) : 0;
+            const ylog = isLog && safeY > 0 ? Math.log10(safeY) : 0;
+
+            //console.log("xlog : " + xlog, typeof xlog);
+            //console.log("ylog : " + ylog, typeof ylog);
+
+            // force prediction to never be NaN
+            const A = Number.isFinite(Number(a)) ? Number(a) : 0;
+            const B = Number.isFinite(Number(b)) ? Number(b) : 0;
+
+            //console.log("A : " +  A, typeof A);
+            //console.log("B : " + B, typeof B);
+
+            const yPred = isLog ? A + B * xlog : A + B * safeX;
+
+            //console.log("yPred : " + yPred, typeof yPred);
+
+            // force residual to never be NaN
+            const residual = safeY - yPred;
+
+            //console.log("residual : " + residual, typeof residual);
+
+            return {
+                no: i + 1,
+                X: safeX,
+                Y: safeY,
+                xlog,
+                ylog,
+                yPred,
+                residual,
+            };
+        });
+    }, [regressionResult]);
+
     return (
-        <>
+        <div className="my-8 border-2 border-t-8 border-primary-dark bg-white rounded-3xl p-8">
             <div className="flex justify-between items-center mb-6">
                 <p className=" text-xl md:text-2xl font-bold">Tabel Hasil Perhitungan Detail</p>
                 {props.kecermatan != null && (
@@ -18,8 +71,8 @@ export default function TabelHasil({ applyKecermatan, regressionResult, tableDat
                     <>
                         {/* NOTE: Log */}
                         <div className="w-20 md:w-1/2 p-2 md:p-4">No</div>
-                        <div className="w-20 md:w-full p-2 md:p-4">X</div>
-                        <div className="w-20 md:w-full p-2 md:p-4">Y</div>
+                        <div className="w-20 md:w-full p-2 md:p-4">{colDef.x} (X)</div>
+                        <div className="w-20 md:w-full p-2 md:p-4">{colDef.y} (Y)</div>
                         <div className="w-20 md:w-full p-2 md:p-4">Xi [Log(X)]</div>
                         <div className="w-20 md:w-full p-2 md:p-4">Yi [Log(Y)]</div>
                         <div className="w-20 md:w-full p-2 md:p-4">Xi²</div>
@@ -30,8 +83,8 @@ export default function TabelHasil({ applyKecermatan, regressionResult, tableDat
                     <>
                         {/* NOTE: Linear */}
                         <div className="w-20 md:w-1/2 p-2 md:p-4">No</div>
-                        <div className="w-20 md:w-full p-2 md:p-4">X</div>
-                        <div className="w-20 md:w-full p-2 md:p-4">Y</div>
+                        <div className="w-20 md:w-full p-2 md:p-4">{colDef.x} (X)</div>
+                        <div className="w-20 md:w-full p-2 md:p-4">{colDef.y} (Y)</div>
                         <div className="w-20 md:w-full p-2 md:p-4">X²</div>
                         <div className="w-20 md:w-full p-2 md:p-4">Y²</div>
                         <div className="w-20 md:w-full p-2 md:p-4">XY</div>
@@ -52,9 +105,9 @@ export default function TabelHasil({ applyKecermatan, regressionResult, tableDat
                             <div className="w-20 md:w-full p-2 md:p-4 overflow-x-auto">{applyKecermatan(row.xlog)}</div>
                             <div className="w-20 md:w-full p-2 md:p-4 overflow-x-auto">{applyKecermatan(row.ylog)}</div>
 
-                            <div className="w-20 md:w-full p-2 md:p-4 overflow-x-auto">{applyKecermatan(Math.pow(row.X,2))}</div>
-                            <div className="w-20 md:w-full p-2 md:p-4 overflow-x-auto">{applyKecermatan(Math.pow(row.Y,2))}</div>
-                            <div className="w-20 md:w-full p-2 md:p-4 overflow-x-auto">{applyKecermatan(row.X * row.Y)}</div>
+                            <div className="w-20 md:w-full p-2 md:p-4 overflow-x-auto">{applyKecermatan(Math.pow(row.xlog,2))}</div>
+                            <div className="w-20 md:w-full p-2 md:p-4 overflow-x-auto">{applyKecermatan(Math.pow(row.ylog,2))}</div>
+                            <div className="w-20 md:w-full p-2 md:p-4 overflow-x-auto">{applyKecermatan(row.xlog * row.ylog)}</div>
                         </>
                     ) : (
                         <>
@@ -99,6 +152,6 @@ export default function TabelHasil({ applyKecermatan, regressionResult, tableDat
                     </>
                 )}
             </div>
-        </>
+        </div>
     )
 }

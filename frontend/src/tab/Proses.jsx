@@ -46,57 +46,6 @@ export default function ProsesPage({ sessionId, setRegressionResult, regressionR
     }, [regressionResult]);
 
     // Hasil detail tabel
-    const tableData = useMemo(() => {
-        if (!regressionResult?.cleaned_data) return [];
-        const a = regressionResult.a;
-        const b = regressionResult.b;
-        const isLog = regressionResult.model === "logarithmic";
-
-        return regressionResult.cleaned_data.map((row, i) => {
-            const X = Number(row.X);
-            const Y = Number(row.Y);
-
-            // force-fix ANY non-number into 0
-            const safeX = Number.isFinite(X) ? X : 0;
-            const safeY = Number.isFinite(Y) ? Y : 0;
-
-            console.log("safeX : " + safeX, typeof safeX);
-            console.log("safeY : " + safeY, typeof safeY);
-
-            // force logs to never be NaN
-            const xlog = isLog && safeX > 0 ? Math.log(safeX) : 0;
-            const ylog = isLog && safeY > 0 ? Math.log(safeY) : 0;
-
-            console.log("xlog : " + xlog, typeof xlog);
-            console.log("ylog : " + ylog, typeof ylog);
-
-            // force prediction to never be NaN
-            const A = Number.isFinite(Number(a)) ? Number(a) : 0;
-            const B = Number.isFinite(Number(b)) ? Number(b) : 0;
-
-            console.log("A : " +  A, typeof A);
-            console.log("B : " + B, typeof B);
-
-            const yPred = isLog ? A + B * xlog : A + B * safeX;
-
-            console.log("yPred : " + yPred, typeof yPred);
-
-            // force residual to never be NaN
-            const residual = safeY - yPred;
-
-            console.log("residual : " + residual, typeof residual);
-
-            return {
-                no: i + 1,
-                X: safeX,
-                Y: safeY,
-                xlog,
-                ylog,
-                yPred,
-                residual,
-            };
-        });
-    }, [regressionResult]);
 
     return (
         <div className="w-[90%] md:w-3/4 mx-auto gap-4 md:gap-8 mb-12">
@@ -203,6 +152,12 @@ export default function ProsesPage({ sessionId, setRegressionResult, regressionR
                             Y = {applyKecermatan(regressionResult.equation?.match(/-?\d+(\.\d+)?/g)[0])} + {applyKecermatan(regressionResult.equation?.match(/-?\d+(\.\d+)?/g)[1])}X
                         </p>
 
+                        {regressionResult.model === "logarithmic" && (
+                            <p className="text-2xl md:text-4xl title-font bg-linear-to-r from-primary to-secondary text-transparent bg-clip-text inline-block">
+                                Log(Y) = {applyKecermatan(regressionResult.equation_log?.match(/-?\d+(\.\d+)?/g)[0])} + {applyKecermatan(regressionResult.equation_log?.match(/-?\d+(\.\d+)?/g)[1])}Log(X) 
+                            </p>
+                        )}
+
                         <p className="text-2xl md:text-4xl title-font bg-linear-to-r from-primary to-secondary text-transparent bg-clip-text inline-block">
                             r² = {applyKecermatan(regressionResult.r2)}
                         </p>
@@ -220,15 +175,13 @@ export default function ProsesPage({ sessionId, setRegressionResult, regressionR
 
             {/* NOTE: TABEL DETAIL */}
             {regressionResult && (
-                <div className="my-8 border-2 border-t-8 border-primary-dark bg-white rounded-3xl p-8">
-                    <TabelHasil 
-                        applyKecermatan={applyKecermatan}  
-                        tableData={tableData}
-                        regressionResult={regressionResult}
-                        kecermatan={props.kecermatan}
-                        setKecermatan={props.setKecermatan}
-                    />
-                </div>
+                <TabelHasil 
+                    applyKecermatan={applyKecermatan}  
+                    regressionResult={regressionResult}
+                    kecermatan={props.kecermatan}
+                    colDef={props.colDef}
+                    setKecermatan={props.setKecermatan}
+                />
             )}
         </div>
     );

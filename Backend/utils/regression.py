@@ -127,8 +127,8 @@ def logarithmic_regression(df, preprocessing_report=""):
         "log_k": float(log_k), # Ini adalah intercept (alpha) pada regresi linear
         
         # Output dua string persamaan agar bisa dipilih
-        "equation": f"Log(Y) = {log_k:.4f} + {n_slope:.4f} * Log(X)",
-        "equation_power": f"Y = {k_value:.4f} * X^{n_slope:.4f}",
+        "equation_log": f"Log(Y) = {log_k:.4f} + {n_slope:.4f} * Log(X)",
+        "equation": f"Y = {k_value:.4f} * X^{n_slope:.4f}",
         
         "preprocessing_report": report,
         "clean_data_report": clean_data_report,
