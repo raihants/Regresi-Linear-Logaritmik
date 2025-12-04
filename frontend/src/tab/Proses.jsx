@@ -1,28 +1,7 @@
-import { useState, useMemo } from "react";
-import KecermatanSettings from "../components/kecermatanSettings.jsx";
+import { useMemo } from "react";
 import TabelHasil from "../components/tabelHasil.jsx";
 
-export default function ProsesPage({ sessionId, setRegressionResult, regressionResult, applyKecermatan, ...props }) {
-    const [loading, setLoading] = useState(false);
-
-    const runRegression = async () => {
-        if (!sessionId) return alert("Upload data dulu!");
-
-        setLoading(true);
-        try {
-            const model = regressionResult?.model || "linear"; // default
-            const res = await fetch(`/api/regression/${model}?session_id=${sessionId}`);
-            const json = await res.json();
-
-            if (!res.ok) throw json;
-
-            setRegressionResult(json);
-        } catch (err) {
-            alert("Error: " + (err.detail || "Tidak bisa menjalankan regresi"));
-        }
-        setLoading(false);
-    };
-
+export default function ProsesPage({ regressionResult, applyKecermatan, ...props }) {
     const debugMessage = (main, log) => (
         <div className="bg-success/20 border-2 border-success rounded-xl p-2 md:p-4 text-success-dark font-bold text-[0.75rem] md:text-xl flex gap-2 my-1 md:my-4">
             <i className="bi bi-check" />
@@ -58,12 +37,13 @@ export default function ProsesPage({ sessionId, setRegressionResult, regressionR
                     debugMessage(rep.split(":")[0], rep.split(":")[1] || "")
                 )}
 
-                {/* Loading bar */}
-                {loading && (
+                {/* Loading bar                {loading && (
                     <div className="w-full h-2 bg-gray-200 rounded-full overflow-hidden my-4">
                         <div className="h-full bg-success animate-pulse"></div>
                     </div>
                 )}
+ */}
+
 
                 {/*
                 <button
@@ -183,6 +163,7 @@ export default function ProsesPage({ sessionId, setRegressionResult, regressionR
                     setKecermatan={props.setKecermatan}
                 />
             )}
+
         </div>
     );
 }

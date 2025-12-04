@@ -1,7 +1,7 @@
 
 export default function KecermatanSettings({kecermatan, setKecermatan}) {
     return (
-        <>
+        <div className="flex flex-nowrap">
             <button 
                 type='button' 
                 className='disabled:text-gray-300'
@@ -28,6 +28,6 @@ export default function KecermatanSettings({kecermatan, setKecermatan}) {
             >
                 <i className='bi bi-caret-right-fill' />
             </button>
-        </>
+        </div>
     )
 }

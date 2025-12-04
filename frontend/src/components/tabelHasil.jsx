@@ -66,91 +66,93 @@ export default function TabelHasil({ applyKecermatan, regressionResult, colDef, 
                 )}
             </div>
 
-            <div className="flex text-[0.85rem] md:text-xl overflow-x-auto items-center text-center bg-gray-300">
-                {regressionResult.model === "logarithmic" ? (
-                    <>
-                        {/* NOTE: Log */}
-                        <div className="w-20 md:w-1/2 p-2 md:p-4">No</div>
-                        <div className="w-20 md:w-full p-2 md:p-4">{colDef.x} (X)</div>
-                        <div className="w-20 md:w-full p-2 md:p-4">{colDef.y} (Y)</div>
-                        <div className="w-20 md:w-full p-2 md:p-4">Xi [Log(X)]</div>
-                        <div className="w-20 md:w-full p-2 md:p-4">Yi [Log(Y)]</div>
-                        <div className="w-20 md:w-full p-2 md:p-4">Xi²</div>
-                        <div className="w-20 md:w-full p-2 md:p-4">Yi²</div>
-                        <div className="w-20 md:w-full p-2 md:p-4">XiYi</div>
-                    </>
-                ) : (
-                    <>
-                        {/* NOTE: Linear */}
-                        <div className="w-20 md:w-1/2 p-2 md:p-4">No</div>
-                        <div className="w-20 md:w-full p-2 md:p-4">{colDef.x} (X)</div>
-                        <div className="w-20 md:w-full p-2 md:p-4">{colDef.y} (Y)</div>
-                        <div className="w-20 md:w-full p-2 md:p-4">X²</div>
-                        <div className="w-20 md:w-full p-2 md:p-4">Y²</div>
-                        <div className="w-20 md:w-full p-2 md:p-4">XY</div>
-                        <div className="w-32 md:w-full p-2 md:p-4">Y(Regresi)</div>
-                        <div className="w-20 md:w-full p-2 md:p-4">Residual</div>
-                    </>
-                )}
-            </div>
-
-            {tableData.map(row => (
-                <div key={row.no} className="flex text-[0.85rem] md:text-xl items-center text-center border-b border-gray-300">
+            <div className="overflow-x-auto md:overflow-x-hidden">
+                <div className="flex text-[0.85rem] md:text-xl items-center text-center">
                     {regressionResult.model === "logarithmic" ? (
                         <>
                             {/* NOTE: Log */}
-                            <div className="w-20 md:w-1/2 p-2 md:p-4">{row.no}</div>
-                            <div className="w-20 md:w-full p-2 md:p-4 overflow-x-auto">{applyKecermatan(row.X)}</div>
-                            <div className="w-20 md:w-full p-2 md:p-4 overflow-x-auto">{applyKecermatan(row.Y)}</div>
-                            <div className="w-20 md:w-full p-2 md:p-4 overflow-x-auto">{applyKecermatan(row.xlog)}</div>
-                            <div className="w-20 md:w-full p-2 md:p-4 overflow-x-auto">{applyKecermatan(row.ylog)}</div>
-
-                            <div className="w-20 md:w-full p-2 md:p-4 overflow-x-auto">{applyKecermatan(Math.pow(row.xlog,2))}</div>
-                            <div className="w-20 md:w-full p-2 md:p-4 overflow-x-auto">{applyKecermatan(Math.pow(row.ylog,2))}</div>
-                            <div className="w-20 md:w-full p-2 md:p-4 overflow-x-auto">{applyKecermatan(row.xlog * row.ylog)}</div>
+                            <div className="table-col-num ">No</div>
+                            <div className="table-col ">{colDef.x} (X)</div>
+                            <div className="table-col ">{colDef.y} (Y)</div>
+                            <div className="table-col ">Xi [Log(X)]</div>
+                            <div className="table-col ">Yi [Log(Y)]</div>
+                            <div className="table-col ">Xi²</div>
+                            <div className="table-col ">Yi²</div>
+                            <div className="table-col ">XiYi</div>
                         </>
                     ) : (
                         <>
                             {/* NOTE: Linear */}
-                            <div className="w-20 md:w-1/2 p-2 md:p-4">{row.no}</div>
-                            <div className="w-20 md:w-full p-2 md:p-4 overflow-x-auto">{applyKecermatan(row.X)}</div>
-                            <div className="w-20 md:w-full p-2 md:p-4 overflow-x-auto">{applyKecermatan(row.Y)}</div>
-                            <div className="w-20 md:w-full p-2 md:p-4 overflow-x-auto">{applyKecermatan(Math.pow(row.X,2))}</div>
-                            <div className="w-20 md:w-full p-2 md:p-4 overflow-x-auto">{applyKecermatan(Math.pow(row.Y,2))}</div>
-                            <div className="w-20 md:w-full p-2 md:p-4 overflow-x-auto">{applyKecermatan(row.X * row.Y)}</div>
-                            <div className="w-32 md:w-full p-2 md:p-4 overflow-x-auto">{applyKecermatan(row.yPred)}</div>
-                            <div className="w-20 md:w-full p-2 md:p-4 overflow-x-auto">{applyKecermatan(row.residual)}</div>
+                            <div className="table-col-num ">No</div>
+                            <div className="table-col ">{colDef.x} (X)</div>
+                            <div className="table-col ">{colDef.y} (Y)</div>
+                            <div className="table-col ">X²</div>
+                            <div className="table-col ">Y²</div>
+                            <div className="table-col ">XY</div>
+                            <div className="table-col ">Y(Regresi)</div>
+                            <div className="table-col ">Residual</div>
                         </>
                     )}
                 </div>
-            ))}
 
-            <div className="text-[0.85rem] md:text-xl items-center text-center border-b border-gray-300 flex font-bold">
-                {regressionResult.model === "logarithmic" ? (
-                    <>
-                        {/* NOTE: Log */}
-                        <div className="w-20 md:w-1/2 p-2 md:p-4"></div>
-                        <div className="w-20 md:w-full p-2 md:p-4 gradient-text overflow-x-auto"></div>
-                        <div className="w-20 md:w-full p-2 md:p-4 gradient-text overflow-x-auto"></div>
-                        <div className="w-20 md:w-full p-2 md:p-4 gradient-text overflow-x-auto">ΣX={applyKecermatan(regressionResult.sumX)}</div>
-                        <div className="w-20 md:w-full p-2 md:p-4 gradient-text overflow-x-auto">ΣY={applyKecermatan(regressionResult.sumY)}</div>
-                        <div className="w-20 md:w-full p-2 md:p-4 gradient-text overflow-x-auto">ΣX²={applyKecermatan(regressionResult.sumX2)}</div>
-                        <div className="w-20 md:w-full p-2 md:p-4 gradient-text overflow-x-auto">ΣY²={applyKecermatan(regressionResult.sumY2)}</div>
-                        <div className="w-20 md:w-full p-2 md:p-4 gradient-text overflow-x-auto">ΣXY={applyKecermatan(regressionResult.sumXY)}</div>
-                    </>
-                ) : (
-                    <>
-                        {/* NOTE: Linear */}
-                        <div className="w-20 md:w-1/2 p-2 md:p-4"></div>
-                        <div className="w-20 md:w-full p-2 md:p-4 gradient-text overflow-x-auto">ΣX={applyKecermatan(regressionResult.sumX)}</div>
-                        <div className="w-20 md:w-full p-2 md:p-4 gradient-text overflow-x-auto">ΣY={applyKecermatan(regressionResult.sumY)}</div>
-                        <div className="w-20 md:w-full p-2 md:p-4 gradient-text overflow-x-auto">ΣX²={applyKecermatan(regressionResult.sumX2)}</div>
-                        <div className="w-20 md:w-full p-2 md:p-4 gradient-text overflow-x-auto">ΣY²={applyKecermatan(regressionResult.sumY2)}</div>
-                        <div className="w-20 md:w-full p-2 md:p-4 gradient-text overflow-x-auto">ΣXY={applyKecermatan(regressionResult.sumXY)}</div>
-                        <div className="w-20 md:w-full p-2 md:p-4 gradient-text"></div>
-                        <div className="w-20 md:w-full p-2 md:p-4 gradient-text"></div>
-                    </>
-                )}
+                {tableData.map(row => (
+                    <div key={row.no} className="flex text-[0.85rem] md:text-xl items-center text-center border-b border-gray-300">
+                        {regressionResult.model === "logarithmic" ? (
+                            <>
+                                {/* NOTE: Log */}
+                                <div className="table-row-num">{row.no}</div>
+                                <div className="table-row">{applyKecermatan(row.X)}</div>
+                                <div className="table-row">{applyKecermatan(row.Y)}</div>
+                                <div className="table-row">{applyKecermatan(row.xlog)}</div>
+                                <div className="table-row">{applyKecermatan(row.ylog)}</div>
+
+                                <div className="table-row">{applyKecermatan(Math.pow(row.xlog,2))}</div>
+                                <div className="table-row">{applyKecermatan(Math.pow(row.ylog,2))}</div>
+                                <div className="table-row">{applyKecermatan(row.xlog * row.ylog)}</div>
+                            </>
+                        ) : (
+                            <>
+                                {/* NOTE: Linear */}
+                                <div className="table-row-num">{row.no}</div>
+                                <div className="table-row">{applyKecermatan(row.X)}</div>
+                                <div className="table-row">{applyKecermatan(row.Y)}</div>
+                                <div className="table-row">{applyKecermatan(Math.pow(row.X,2))}</div>
+                                <div className="table-row">{applyKecermatan(Math.pow(row.Y,2))}</div>
+                                <div className="table-row">{applyKecermatan(row.X * row.Y)}</div>
+                                <div className="table-row">{applyKecermatan(row.yPred)}</div>
+                                <div className="table-row">{applyKecermatan(row.residual)}</div>
+                            </>
+                            )}
+                    </div>
+                ))}
+
+                <div className="text-[0.85rem] md:text-xl items-center text-center border-b border-gray-300 flex font-bold whitespace-nowrap">
+                    {regressionResult.model === "logarithmic" ? (
+                        <>
+                            {/* NOTE: Log */}
+                            <div className="table-row-num"></div>
+                            <div className="table-row"></div>
+                            <div className="table-row "></div>
+                            <div className="table-row gradient-text">ΣX={applyKecermatan(regressionResult.sumX)}</div>
+                            <div className="table-row gradient-text">ΣY={applyKecermatan(regressionResult.sumY)}</div>
+                            <div className="table-row gradient-text">ΣX²={applyKecermatan(regressionResult.sumX2)}</div>
+                            <div className="table-row gradient-text">ΣY²={applyKecermatan(regressionResult.sumY2)}</div>
+                            <div className="table-row gradient-text">ΣXY={applyKecermatan(regressionResult.sumXY)}</div>
+                        </>
+                    ) : (
+                        <>
+                            {/* NOTE: Linear */}
+                            <div className="table-row-num"></div>
+                            <div className="table-row gradient-text">ΣX={applyKecermatan(regressionResult.sumX)}</div>
+                            <div className="table-row gradient-text">ΣY={applyKecermatan(regressionResult.sumY)}</div>
+                            <div className="table-row gradient-text">ΣX²={applyKecermatan(regressionResult.sumX2)}</div>
+                            <div className="table-row gradient-text">ΣY²={applyKecermatan(regressionResult.sumY2)}</div>
+                            <div className="table-row gradient-text">ΣXY={applyKecermatan(regressionResult.sumXY)}</div>
+                            <div className="table-row gradient-text"></div>
+                            <div className="table-row gradient-text"></div>
+                        </>
+                        )}
+                </div>
             </div>
         </div>
     )

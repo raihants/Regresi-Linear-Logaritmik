@@ -1,8 +1,9 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import * as d3 from "d3";
 import TabelHasil from "../components/tabelHasil.jsx";
 
-export default function OutputPage({ regressionResult, colDef, ...props }) {
+export default function OutputPage({ regressionResult, colDef, sessionId, ...props }) {
+    const API_URL = "http://127.0.0.1:8000/api";
     const svgRef = useRef(null);
     const wrapperRef = useRef(null);
     const zoomRef = useRef(null);
@@ -298,6 +299,21 @@ export default function OutputPage({ regressionResult, colDef, ...props }) {
         setRefreshKey((k) => k + 1);
     };
 
+    {/* WARN: button export */}
+    const handleExport = async () => {
+        try {
+            const modelType = regressionResult.model;
+            const regResp = await fetch(`${API_URL}/regression/${modelType}/pdf?session_id=${sessionId}`);
+            const regResult = await regResp.json();
+            if (!regResp.ok) {
+                alert(regResult.detail || "Gagal menghitung regresi");
+                return;
+            }
+        } catch (err) {
+            console.error(err);
+            alert("Terjadi error ketika memproses data.");
+        }
+    };
 
     return (
         <div className="w-[90%] md:w-3/4 mx-auto mb-12">
@@ -339,21 +355,9 @@ export default function OutputPage({ regressionResult, colDef, ...props }) {
                 </div>
             )}
 
-            <div className="bg-white border-success border-2 border-t-8 p-8 shadow-xl rounded-3xl flex my-8 items-center w-full text-xl">
-                <div className="flex flex-col gap-2">
-                    <label for="opsi">Export Hasil Sebagai </label>
-
-                    <select id="opsi" className="bg-linear-to-br from-white to-gray-300 rounded-xl p-2 px-4 border-gray-300 border text-[1rem]">
-                        <option value="png">.png</option>
-                        <option value="png">.jpeg</option>
-                        <option value="pdf">.pdf</option>
-                    </select>
-                </div>
-
-                <button type="button" className="bg-linear-to-br from-primary to-secondary hover:from-secondary hover:to-primary duration-300 ease-in-out transition-colors text-white font-bold text-xl p-4 rounded-xl shadow-md w-[85%] ml-auto">
-                    Export Hasil
-                </button>
-            </div>
+            <button type="button" className="bg-linear-to-br from-primary to-secondary hover:from-secondary hover:to-primary duration-300 ease-in-out transition-colors text-white font-bold text-xl md:text-2xl p-4 rounded-xl shadow-md w-full ml-auto title-font border-secondary border" onClick={handleExport}>
+                Export Hasil
+            </button>
         </div>
     );
 }
