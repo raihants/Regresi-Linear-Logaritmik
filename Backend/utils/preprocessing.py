@@ -35,14 +35,22 @@ def preprocess_data(df: pd.DataFrame, model: str):
 
     # --- Logarithmic: X tidak boleh 0 ---
     if model == "logarithmic":
-        zero_count = (df["X"] == 0).sum()
-        df = df[df["X"] != 0]
-        if zero_count > 0:
-            report.append(f"Menghapus {zero_count} baris (X = 0 tidak valid untuk logaritmik)")
+        # X tidak boleh 0 atau negatif
+        invalid_x = ((df["X"] <= 0)).sum()
+        df = df[df["X"] > 0]
 
-    # --- Sort ---
-    df = df.sort_values("X").reset_index(drop=True)
-    report.append("Men-sort data berdasarkan X")
+        # Y juga tidak boleh 0 atau negatif
+        invalid_y = ((df["Y"] <= 0)).sum()
+        df = df[df["Y"] > 0]
+
+        if invalid_x > 0:
+            report.append(f"Menghapus {invalid_x} baris (X <= 0 tidak valid untuk logaritmik)")
+        if invalid_y > 0:
+            report.append(f"Menghapus {invalid_y} baris (Y <= 0 tidak valid untuk logaritmik)")
+
+        # --- Sort ---
+        df = df.sort_values("X").reset_index(drop=True)
+        report.append("Men-sort data berdasarkan X")
 
     # --- Outlier Z-score ---
     before = len(df)

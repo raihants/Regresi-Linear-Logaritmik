@@ -1,4 +1,5 @@
 import numpy as np
+import pandas as pd
 
 def linear_regression(df, preprocessing_report=None, clean_data_report=None):
     if preprocessing_report is None:
@@ -7,10 +8,11 @@ def linear_regression(df, preprocessing_report=None, clean_data_report=None):
         clean_data_report = []
 
     cleaned_data = df.to_dict(orient="records")
+    df_clean = pd.DataFrame(cleaned_data)
 
-    X = df["X"]
-    Y = df["Y"]
-
+    X = df_clean["X"]
+    Y = df_clean["Y"]
+    
     n = len(X)
     sumX = X.sum()
     sumY = Y.sum()
@@ -62,9 +64,13 @@ def logarithmic_regression(df, preprocessing_report=None, clean_data_report=None
         clean_data_report = []
 
     cleaned_data = df.to_dict(orient="records")
+    df_clean = pd.DataFrame(cleaned_data)
 
-    X = df["X"]
-    Y = df["Y"]
+    X = df_clean["X"]
+    Y = df_clean["Y"]
+    
+    if (X <= 0).any() or (Y <= 0).any():
+        raise ValueError("Data tidak valid: X dan Y harus > 0 untuk regresi logaritmik.")
 
     logX = np.log10(X)
     logY = np.log10(Y)
