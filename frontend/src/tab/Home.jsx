@@ -23,7 +23,7 @@ export default function HomePage({setTab, setWarningMsg}) {
 
     return(
         <div className="w-[90%] md:w-3/4 mx-auto flex flex-col gap-8 mb-12">
-            <div className="base-bg-gradient-r text-white mx-auto w-full p-8 rounded-3xl flex flex-col relative items-center gap-4 py-20 shadow-xl">
+            <div className="backdrop-blur-3xl bg-transparent text-white mx-auto w-full p-8 rounded-3xl flex flex-col relative items-center gap-4 py-20 shadow-xl">
                 <BlurText
                     text="Analisis Regresi"
                     delay={300}

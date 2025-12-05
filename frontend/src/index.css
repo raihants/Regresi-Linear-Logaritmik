@@ -38,7 +38,11 @@
 }
 
 .selectedTab {
-    @apply bg-linear-to-r from-primary to-secondary text-white py-2;
+    @apply bg-white py-2;
+}
+
+.selectedTab i {
+    @apply bg-linear-to-br from-primary to-secondary text-transparent bg-clip-text inline-block font-bold;
 }
 
 .baseTab {
@@ -51,6 +55,10 @@
 
 .base-bg-gradient-br {
     @apply bg-linear-to-br from-primary to-secondary;
+}
+
+.base-bg-gradient-br-trans {
+    @apply bg-linear-to-br/50 from-primary to-secondary;
 }
 
 .table-row-num {

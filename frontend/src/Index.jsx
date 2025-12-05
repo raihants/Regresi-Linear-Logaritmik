@@ -107,13 +107,13 @@ export default function Index()
                 </div>
 
                 {/* Tabs */}
-                <div className="flex justify-around mx-auto w-[90%] md:w-3/4 px-8 py-4 rounded-3xl shadow-xl border-2 border-white bg-white/20 flex-wrap text-[0.75rem] md:text-xl gap-x-8 backdrop-blur-3xl">
+                <div className="flex justify-around mx-auto w-[90%] md:w-3/4 px-8 py-4 rounded-3xl shadow-xl border-2 border-white bg-white/20 flex-wrap text-[0.75rem] md:text-xl gap-x-8 backdrop-blur-3xl text-white">
 
                     <button type="button"
                         className={`baseTab ${tab === 0 ? "selectedTab" : ""}`}
                         onClick={() => setTab(0)}
                     >
-                        <i className="bi bi-house-door-fill mx-1"/> Beranda
+                        <i className="bi bi-house-door-fill mx-1"> Beranda</i> 
                     </button>
 
                     <button type="button"
@@ -124,7 +124,7 @@ export default function Index()
                     </button>
 
                     <button type="button"
-                        className={`baseTab disabled:text-gray-600 ${tab === 2 ? "selectedTab" : ""}`}
+                        className={`baseTab disabled:text-gray-300 ${tab === 2 ? "selectedTab" : ""}`}
                         disabled={regressionResult==null}
                         onClick={() => setTab(2)}
                     >
@@ -132,7 +132,7 @@ export default function Index()
                     </button>
 
                     <button type="button"
-                        className={`baseTab disabled:text-gray-600 ${tab === 3 ? "selectedTab" : ""}`}
+                        className={`baseTab disabled:text-gray-300 ${tab === 3 ? "selectedTab" : ""}`}
                         disabled={regressionResult==null}
                         onClick={() => setTab(3)}
                     >
