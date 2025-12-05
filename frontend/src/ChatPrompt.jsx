@@ -4,7 +4,7 @@ export default function ChatPrompt({ setChat, sessionId, regressionResult }) {
     const [messages, setMessages] = useState([]);
     const [input, setInput] = useState("");
 
-    const API_URL = "http://127.0.0.1:8000/api";
+    const API_URL = "https://api.reglab.cyou/api";
 
     // === PESAN AWAL OTOMATIS ===
     useEffect(() => {

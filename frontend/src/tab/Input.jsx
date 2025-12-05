@@ -4,7 +4,7 @@ import * as XLSX from "xlsx";
 import KecermatanSettings from '../components/kecermatanSettings.jsx';
 
 export default function InputPage({ rowData, setRowData, setRegressionResult, setSessionId, warningMsg, setWarningMsg, kecermatan, setKecermatan, setTab, colDef, setColDef, modelType, setModelType, ...props }) {
-    const API_URL = "http://127.0.0.1:8000/api";
+    const API_URL = "https://api.reglab.cyou/api";
     const fileRef = useRef(null);
 
     const [warningTimer, setWarningTimer] = useState(5);

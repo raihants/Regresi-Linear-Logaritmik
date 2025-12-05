@@ -3,7 +3,7 @@ import * as d3 from "d3";
 import TabelHasil from "../components/tabelHasil.jsx";
 
 export default function OutputPage({ regressionResult, colDef, sessionId, ...props }) {
-    const API_URL = "http://127.0.0.1:8000/api";
+    const API_URL = "https://api.reglab.cyou/api";
     const svgRef = useRef(null);
     const wrapperRef = useRef(null);
     const zoomRef = useRef(null);
