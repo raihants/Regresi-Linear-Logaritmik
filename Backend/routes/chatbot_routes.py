@@ -24,13 +24,21 @@ class ChatRequest(BaseModel):
     model: str  # linear / logarithmic
     question: str
 
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+UPLOAD_DIR = os.path.abspath(os.path.join(BASE_DIR, "..", "uploads"))
 
 def load_csv(session_id):
     import pandas as pd
-    path = f"uploads/{session_id}.csv"
-    if not os.path.exists(path):
-        raise HTTPException(404, "Session ID tidak ditemukan")
-    return pd.read_csv(path)
+    csv_path = os.path.join(UPLOAD_DIR, f"{session_id}.csv")
+    xlsx_path = os.path.join(UPLOAD_DIR, f"{session_id}.xlsx")
+
+    if os.path.exists(csv_path):
+        return pd.read_csv(csv_path)
+
+    if os.path.exists(xlsx_path):
+        return pd.read_excel(xlsx_path)
+
+    raise HTTPException(404, "Session ID tidak ditemukan")
 
 
 def call_groq(payload: dict):

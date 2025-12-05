@@ -1,14 +1,17 @@
+import os
 from fastapi import APIRouter, UploadFile, File, HTTPException
 from pydantic import BaseModel
 import pandas as pd
 import uuid
-import os
 
 router = APIRouter()
-UPLOAD_DIR = "uploads"
+
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))   # lokasi folder routes
+UPLOAD_DIR = os.path.abspath(os.path.join(BASE_DIR, "..", "uploads"))
 
 class JSONUpload(BaseModel):
     data: list
+
 
 @router.post("/json")
 async def upload_json(payload: JSONUpload):
@@ -20,12 +23,11 @@ async def upload_json(payload: JSONUpload):
     try:
         df = pd.DataFrame(payload.data)
     except:
-        raise HTTPException(400, "Format JSON tidak valid. Format harus list of object.")
+        raise HTTPException(400, "Format JSON tidak valid")
 
     if len(df) == 0:
         raise HTTPException(400, "Data tidak boleh kosong")
 
-    # Normalisasi nama kolom
     df.columns = [c.strip().upper() for c in df.columns]
 
     if "X" not in df.columns or "Y" not in df.columns:
@@ -36,8 +38,8 @@ async def upload_json(payload: JSONUpload):
     return {
         "message": "JSON uploaded successfully",
         "session_id": session_id,
-        "rows": len(df)
     }
+
 
 @router.post("/")
 async def upload_file(file: UploadFile = File(...)):
@@ -45,7 +47,6 @@ async def upload_file(file: UploadFile = File(...)):
 
     filename = file.filename.lower()
 
-    # DETEKSI HANYA DARI EKSTENSI
     if filename.endswith(".csv"):
         ext = ".csv"
     elif filename.endswith(".xlsx"):
@@ -56,12 +57,10 @@ async def upload_file(file: UploadFile = File(...)):
     session_id = str(uuid.uuid4())
     save_path = os.path.join(UPLOAD_DIR, f"{session_id}{ext}")
 
-    # Simpan file persis apa adanya
     with open(save_path, "wb") as f:
         f.write(await file.read())
 
     return {
         "message": "File uploaded successfully",
         "session_id": session_id,
-        "path": save_path
     }
