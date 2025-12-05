@@ -49,6 +49,22 @@
     @apply py-2 transition-colors duration-300 ease-in-out rounded-3xl grow;
 }
 
+.bgt {
+    @apply bg-white/5 backdrop-blur-3xl text-white;
+}
+
+.bor {
+    @apply hover:border border-white;
+}
+
+.glow {
+    @apply shadow-secondary shadow-[0_2px_12px];
+}
+
+.glow-green {
+    @apply shadow-success shadow-[0_2px_12px];
+}
+
 .base-bg-gradient-r {
     @apply bg-linear-to-r from-primary to-secondary; 
 }

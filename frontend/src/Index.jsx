@@ -96,7 +96,7 @@ export default function Index()
                 )}
 
                 {/* Header */}
-                <div className="mx-auto mt-12 border-3 border-white p-8 w-[90%] md:w-3/4 rounded-3xl shadow-xl flex items-center flex-col bg-white/20 backdrop-blur-3xl text-white">
+                <div className="mx-auto mt-12 bor p-8 w-[90%] md:w-3/4 rounded-3xl shadow-xl flex items-center flex-col bgt">
                     <p className="text-3xl md:text-6xl/24 title-font bg-linear-to-br text-white text-center">
                         Aplikasi Regresi Linear
                     </p>
@@ -107,7 +107,7 @@ export default function Index()
                 </div>
 
                 {/* Tabs */}
-                <div className="flex justify-around mx-auto w-[90%] md:w-3/4 px-8 py-4 rounded-3xl shadow-xl border-2 border-white bg-white/20 flex-wrap text-[0.75rem] md:text-xl gap-x-8 backdrop-blur-3xl text-white">
+                <div className="flex justify-around mx-auto w-[90%] md:w-3/4 px-8 py-4 rounded-3xl shadow-xl bor flex-wrap text-[0.75rem] md:text-xl gap-x-8 bgt">
 
                     <button type="button"
                         className={`baseTab ${tab === 0 ? "selectedTab" : ""}`}
