@@ -48,63 +48,59 @@ def call_groq(payload: dict):
 
 @router.post("/ask")
 async def ask_bot(request: ChatRequest):
+    import json
+
     # Load CSV
     df = load_csv(request.session_id)
 
-    # -------- PREPROCESSING OTOMATIS --------
-    # Normalisasi kolom CSV
+    # Normalisasi nama kolom
     df.columns = [c.strip().lower() for c in df.columns]
 
-    # Deteksi dua kolom pertama sebagai X dan Y
     if len(df.columns) < 2:
-        raise HTTPException(400, "CSV minimal harus memiliki 2 kolom untuk regresi")
+        raise HTTPException(400, "CSV minimal harus memiliki 2 kolom")
 
     col_x = df.columns[0]
     col_y = df.columns[1]
 
-    # Buat preprocess report
-    preprocessing_report = (
-        f"Kolom asli: {df.columns.tolist()}. "
-        f"Kolom '{col_x}' → X, kolom '{col_y}' → Y. "
-        f"Total baris = {len(df)}."
-    )
+    preprocessing_report = [
+        f"Kolom asli: {df.columns.tolist()}",
+        f"Kolom '{col_x}' dipetakan sebagai X dan kolom '{col_y}' dipetakan sebagai Y.",
+        f"Total baris = {len(df)}"
+    ]
 
-    # Rename untuk dipakai regresi
+    # Rename kolom
     df = df.rename(columns={col_x: "X", col_y: "Y"})
 
-
-    # Buat preprocessing report
-    preprocessing_report = f"Kolom dipetakan menjadi X dan Y. Total baris = {len(df)}."
-
-    # -------- HITUNG REGRESI --------
+    # Hitung regresi
     if request.model == "linear":
-        result = linear_regression(df, preprocessing_report)
+        result = linear_regression(df, preprocessing_report=preprocessing_report)
     elif request.model == "logarithmic":
-        result = logarithmic_regression(df, preprocessing_report)
+        result = logarithmic_regression(df, preprocessing_report=preprocessing_report)
     else:
         raise HTTPException(400, "Model harus 'linear' atau 'logarithmic'")
 
+    # === KONVERSI HASIL REGRESI KE JSON TERFORMAT ===
+    result_text = json.dumps(result, indent=2, ensure_ascii=False)
 
-    preprocessing_text = result.get("preprocessing_report", "")
-
-    # Build context untuk LLM
+    # === BANGUN SISTEM KONTEXT===
     context = f"""
-Anda adalah asisten statistik. Jawablah berdasarkan hasil regresi berikut:
+Anda adalah asisten analisis statistik dan regresi data.
 
-Model: {result.get('model')}
-Persamaan: {result.get('equation')}
+Berikut adalah hasil perhitungan regresi yang harus Anda gunakan sebagai referensi utama.
+Jangan membuat asumsi lain di luar data berikut.
 
-Nilai a: {result.get('a')}
-Nilai b: {result.get('b')}
-R²: {result.get('r2')}
+=== HASIL REGRESI (JSON) ===
+{result_text}
+=== END JSON ===
 
-Preprocessing:
-{preprocessing_text}
-
---- END KONTEXT ---
+Instruksi:
+- Gunakan semua nilai pada JSON (a, b, n, k, r, r2, sumX, sumY, details, cleaned_data, preprocessing_report, dll).
+- Jika user bertanya penjelasan, jelaskan dengan menggunakan referensi angka dari JSON ini.
+- Jika user bertanya prediksi, gunakan persamaan regresi yang diberikan.
+- Jika user bertanya tentang kualitas model, gunakan nilai R dan R².
 """
 
-    # Payload Groq (OpenAI-compatible)
+    # Payload Groq
     payload = {
         "model": CHAT_MODEL,
         "messages": [
@@ -126,9 +122,7 @@ Preprocessing:
     if response.status_code != 200:
         raise HTTPException(500, f"Groq Error: {data}")
 
-    try:
-        reply = data["choices"][0]["message"]["content"]
-    except:
-        reply = str(data)
+    reply = data["choices"][0]["message"]["content"]
 
     return {"answer": reply}
+
