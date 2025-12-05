@@ -96,7 +96,7 @@ export default function Index()
                 )}
 
                 {/* Header */}
-                <div className="mx-auto mt-12 bor p-8 w-[90%] md:w-3/4 rounded-3xl shadow-xl flex items-center flex-col bgt">
+                <div className="mx-auto mt-12 glow p-8 w-[90%] md:w-3/4 rounded-3xl shadow-xl flex items-center flex-col bgt">
                     <p className="text-3xl md:text-6xl/24 title-font bg-linear-to-br text-white text-center">
                         Aplikasi Regresi Linear
                     </p>
@@ -107,7 +107,7 @@ export default function Index()
                 </div>
 
                 {/* Tabs */}
-                <div className="flex justify-around mx-auto w-[90%] md:w-3/4 px-8 py-4 rounded-3xl shadow-xl bor flex-wrap text-[0.75rem] md:text-xl gap-x-8 bgt">
+                <div className="flex justify-around mx-auto w-[90%] md:w-3/4 px-8 py-4 rounded-3xl shadow-xl glow flex-wrap text-[0.75rem] md:text-xl gap-x-8 bgt">
 
                     <button type="button"
                         className={`baseTab ${tab === 0 ? "selectedTab" : ""}`}
@@ -120,7 +120,7 @@ export default function Index()
                         className={`baseTab ${tab === 1 ? "selectedTab" : ""}`}
                         onClick={() => setTab(1)}
                     >
-                        <i className="bi bi-file-arrow-up-fill mx-1"/> Input Data
+                        <i className="bi bi-file-arrow-up-fill mx-1"> Input Data</i>
                     </button>
 
                     <button type="button"
@@ -128,7 +128,7 @@ export default function Index()
                         disabled={regressionResult==null}
                         onClick={() => setTab(2)}
                     >
-                        <i className="bi bi-calculator mx-1"/> Proses & Hasil
+                        <i className="bi bi-calculator mx-1"> Proses & Hasil</i>
                     </button>
 
                     <button type="button"
@@ -136,7 +136,7 @@ export default function Index()
                         disabled={regressionResult==null}
                         onClick={() => setTab(3)}
                     >
-                        <i className="bi bi-graph-up mx-1"/> Visualisasi & Export
+                        <i className="bi bi-graph-up mx-1"> Visualisasi & Export</i>
                     </button>
                 </div>
 

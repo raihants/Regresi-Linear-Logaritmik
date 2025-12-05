@@ -23,7 +23,7 @@ export default function HomePage({setTab, setWarningMsg}) {
 
     return(
         <div className="w-[90%] md:w-3/4 mx-auto flex flex-col gap-8 mb-12">
-            <div className="bgt bor text-white mx-auto w-full p-8 rounded-3xl flex flex-col relative items-center gap-4 py-20 shadow-xl">
+            <div className="bgt glow text-white mx-auto w-full p-8 rounded-3xl flex flex-col relative items-center gap-4 py-20 shadow-xl">
                 <BlurText
                     text="Analisis Regresi"
                     delay={300}
@@ -44,7 +44,7 @@ export default function HomePage({setTab, setWarningMsg}) {
 
             {/* NOTE: Info */}
             <div className="flex gap-4 flex-wrap">
-                <div className="bgt bor rounded-3xl p-8 flex flex-col gap-4 w-1/3 shadow-xl grow md:basis-0 basis-2xl">
+                <div className="bgt glow rounded-3xl p-8 flex flex-col gap-4 w-1/3 shadow-xl grow md:basis-0 basis-2xl">
                     <i className="bi bi-file-earmark-arrow-up-fill text-4xl text-white base-bg-gradient-br p-4 rounded-xl w-fit mx-auto glow"/>
                     <p className="font-bold text-center text-2xl">Input Data Fleksibel</p>
                     <p className="text-gray-300 text-center w-2/3 mx-auto">
@@ -52,7 +52,7 @@ export default function HomePage({setTab, setWarningMsg}) {
                     </p>
                 </div>
 
-                <div className="bgt bor rounded-3xl p-8 flex flex-col gap-4 w-1/3 shadow-xl grow md:basis-0 basis-2xl">
+                <div className="bgt glow rounded-3xl p-8 flex flex-col gap-4 w-1/3 shadow-xl grow md:basis-0 basis-2xl">
                     <i className="bi bi-calculator-fill text-4xl text-white bg-linear-to-br from-green-400 to-teal-600 p-4 rounded-xl w-fit mx-auto glow-green"/>
                     <p className="font-bold text-center text-2xl">Analisis Lengkap</p>
                     <p className="text-gray-300 text-center w-2/3 mx-auto">
@@ -60,7 +60,7 @@ export default function HomePage({setTab, setWarningMsg}) {
                     </p>
                 </div>
 
-                <div className="bgt bor rounded-3xl p-8 flex flex-col gap-4 w-1/3 shadow-xl grow md:basis-0 basis-2xl">
+                <div className="bgt glow rounded-3xl p-8 flex flex-col gap-4 w-1/3 shadow-xl grow md:basis-0 basis-2xl">
                     <i className="bi bi-graph-up text-4xl text-white base-bg-gradient-br p-4 rounded-xl w-fit mx-auto glow"/>
                     <p className="font-bold text-center text-2xl">Visualisasi Interaktif</p>
                     <p className="text-gray-300 text-center w-2/3 mx-auto">
@@ -71,7 +71,7 @@ export default function HomePage({setTab, setWarningMsg}) {
             </div>
 
             {/* NOTE: User Guide */}
-            <div className="bg-white rounded-3xl flex flex-col items-center p-8 shadow-xl bgt bor">
+            <div className="bg-white rounded-3xl flex flex-col items-center p-8 shadow-xl bgt glow">
                 <p className="text-2xl md:text-4xl font-bold my-4 text-center">Cara Menggunakan Aplikasi</p>
                 <div className="flex gap-4 flex-wrap md:flex-nowrap">
 
@@ -120,7 +120,7 @@ export default function HomePage({setTab, setWarningMsg}) {
             </div>
 
             {/* NOTE: AI Section */}
-            <div className="bgt bor w-full items-center text-center rounded-3xl shadow-xl p-8">
+            <div className="bgt glow w-full items-center text-center rounded-3xl shadow-xl p-8">
                 <p className="title-font text-2xl md:text-4xl my-2 md:my-6">Tanya AI</p>
 
                 <div className="flex">
@@ -182,7 +182,7 @@ export default function HomePage({setTab, setWarningMsg}) {
             </div>
 
             {/* NOTE: Made by*/}
-            <div className="flex flex-col bgt bor w-full text-white items-center rounded-3xl shadow-xl p-8 text-center">
+            <div className="flex flex-col bgt glow w-full text-white items-center rounded-3xl shadow-xl p-8 text-center">
                 <p className="text-2xl md:text-4xl text-center font-bold my-8">Tim Pengembang</p>
                     {devPage==0 && (
                         <div className="flex gap-6 m-4 flex-wrap md:flex-nowrap">

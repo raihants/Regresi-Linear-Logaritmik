@@ -163,25 +163,25 @@ export default function InputPage({ rowData, setRowData, setRegressionResult, se
         <div className='w-[90%] md:w-3/4 mx-auto flex flex-col'>
             {/* NOTE: warning message */}
             {warningMsg != "" && (
-                <div className='bg-warning-light w-full mb-8 p-6 text-warning-dark border-warning border-2 rounded-3xl font-bold text-xl'>
+                <div className='bg-warning-light/10 w-full mb-8 p-6 text-warning-dark border-warning border-2 rounded-3xl font-bold text-xl'>
                     <p>{warningMsg}</p>
                 </div>
             )}
 
             <div className='w-full flex flex-wrap md:flex-nowrap gap-4 md:gap-8 mb-12'>
                 {/* NOTE: BAGIAN INPUT MANUAL */}
-                <div className="w-full bg-white flex flex-col rounded-3xl p-4 px-8 shadow-xl border-2 border-secondary border-t-8">
+                <div className="w-full bgt flex flex-col rounded-3xl p-4 px-8 shadow-xl border-2 border-secondary/50 border-t-8 glow">
 
                     <div className="flex items-center gap-2 mb-4">
-                        <i className="bi bi-table text-white bg-secondary py-2 px-3 text-[0.75rem] md:text-xl rounded-xl" />
+                        <i className="bi bi-table text-white bg-secondary py-2 px-3 text-[0.75rem] md:text-xl rounded-xl glow" />
                         <p className="font-bold text-xl md:text-2xl">Input Data</p>
                     </div>
 
                     {/* NOTE: Setting */}
-                    <div className="flex gap-8 text-[1rem] md:text-xl flex-wrap md:flex-nowrap my-3 bg-linear-to-br from-white to-secondary/20 p-4 rounded-xl border border-secondary">
-                        <div className='flex flex-col gap-2'>
+                    <div className="flex gap-8 text-[1rem] md:text-xl flex-wrap md:flex-nowrap my-3 bgt2 p-4 rounded-xl font-bold glow">
+                        <div className='flex flex-col gap-2 '>
                             <p>Tipe Regresi</p>
-                            <div className='rounded-xl py-2 px-4 bg-white shadow-xl w-full gap-4 flex'>
+                            <div className='rounded-xl py-2 px-4 bg-white shadow-xl w-full gap-4 flex text-black'>
                                 {["linear", "logarithmic"].map((type) => (
                                     <label key={type} className="flex items-center gap-2 cursor-pointer">
                                         <input
@@ -203,7 +203,7 @@ export default function InputPage({ rowData, setRowData, setRegressionResult, se
                                 <p>Kecermatan</p>
                                 <p>{"( 0." + "0".repeat(kecermatan) + " )"}</p>
                             </div>
-                            <div className='rounded-xl py-2 px-4 bg-white shadow-xl w-fit'>
+                            <div className='rounded-xl py-2 px-4 bg-white shadow-xl w-fit text-black'>
                                 <KecermatanSettings kecermatan={kecermatan} setKecermatan={setKecermatan} />
                             </div>
                         </div>
@@ -212,11 +212,11 @@ export default function InputPage({ rowData, setRowData, setRegressionResult, se
                     {/* Label Variabel */}
                     <div className='flex gap-2 text-[1rem] md:text-xl flex-wrap md:flex-nowrap mb-4'>
                         {["x", "y"].map((col) => (
-                            <div key={col} className='w-full bg-linear-to-br from-white to-secondary/20 rounded-xl p-4 shadow-md border border-secondary'>
+                            <div key={col} className='w-full bgt2 rounded-xl p-4 shadow-md glow'>
                                 <p>Label Variabel {col.toUpperCase()}</p>
                                 <input
                                     type="text"
-                                    className='rounded-xl py-2 px-4 bg-white shadow-xl mt-2 w-full'
+                                    className='rounded-xl py-2 px-4 bg-white shadow-xl mt-2 w-full  text-black'
                                     placeholder={col === "x" ? "Misal: Jam Belajar" : "Misal: Nilai Ujian"}
                                     onChange={(e) => setColDef(prev => ({ ...prev, [col]: e.target.value }))}
                                     value={colDef[col]}
@@ -226,19 +226,19 @@ export default function InputPage({ rowData, setRowData, setRegressionResult, se
                     </div>
 
                     {/* Tabel Data */}
-                    <div className='text-[1rem] md:text-2xl mb-8'>
+                    <div className='text-[1rem] md:text-2xl mb-8 bgt2 glow rounded-xl p-4'>
                         <div className='flex font-semibold'>
-                            <div className='w-1/12'>No.</div>
+                            <div className='w-1/12 text-center'>No.</div>
                             <div className='w-5/12'>{colDef.x}</div>
                             <div className='w-5/12'>{colDef.y}</div>
                         </div>
 
                         {rowData.map((data, key) => (
-                            <div className='flex gap-2 my-2' key={key}>
-                                <div className='w-1/12 py-2'>{key + 1}</div>
+                            <div className='flex gap-2 my-2 ' key={key}>
+                                <div className='w-1/12 py-2 text-center '>{key + 1}</div>
                                 <input
                                     type="text"
-                                    className='w-5/12 shadow-xl rounded-xl py-2 px-4 bg-white'
+                                    className='w-5/12 shadow-xl rounded-xl py-2 px-4 bg-white text-black'
                                     value={data.xEdit!==null ? data.xEdit : props.applyKecermatan(data.x)}
                                     onChange={(e) => {
                                         setRowData(prev => {
@@ -264,7 +264,7 @@ export default function InputPage({ rowData, setRowData, setRegressionResult, se
                                 />
                                 <input
                                     type="number"
-                                    className='w-5/12 shadow-xl rounded-xl py-2 px-4 bg-white'
+                                    className='w-5/12 shadow-xl rounded-xl py-2 px-4 bg-white text-black'
                                     value={data.yEdit!==null ? data.yEdit : props.applyKecermatan(data.y)}
                                     onChange={(e) => {
                                         setRowData(prev => {
@@ -295,7 +295,7 @@ export default function InputPage({ rowData, setRowData, setRegressionResult, se
                     <div className='flex items-center gap-4 text-white font-bold text-[1rem] md:text-xl mb-4'>
                         <button
                             type="button"
-                            className='w-full bg-success p-2 rounded-xl shadow-[0_0_16px] shadow-success/50'
+                            className='w-full bg-success p-2 rounded-xl shadow-[0_0_16px] shadow-success/50 glow-green'
                             onClick={() => setRowData(prev => [...prev, { x: 0, y: 0 }])}
                         >
                             + Tambah Baris
@@ -303,7 +303,7 @@ export default function InputPage({ rowData, setRowData, setRegressionResult, se
 
                         <button
                             type="button"
-                            className='w-full bg-danger p-2 rounded-xl shadow-[0_0_16px] shadow-danger/50'
+                            className='w-full bg-danger p-2 rounded-xl shadow-[0_0_16px] shadow-danger/50 glow-red'
                             onClick={() => setRowData(prev => prev.slice(0, -1))}
                         >
                             <i className='bi bi-trash3-fill mr-1' />Hapus Baris
@@ -313,7 +313,7 @@ export default function InputPage({ rowData, setRowData, setRegressionResult, se
                     {/* Button Proses Manual */}
                     <button
                         type="button"
-                        className='text-white font-bold text-xl md:text-2xl w-full bg-success p-4 rounded-xl shadow-[0_0_16px] shadow-success/50 my-4'
+                        className='text-white font-bold text-xl md:text-2xl w-full bg-success p-4 rounded-xl shadow-[0_0_16px] shadow-success/50 my-4 glow-green'
                         onClick={handleProcess}
                     >
                         <i className='bi bi-calculator-fill mr-1' />Proses Data & Hitung Regresi

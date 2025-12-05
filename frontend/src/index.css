@@ -22,6 +22,7 @@
     --color-secondary: #8b5cf6;
     --color-success: #10b981;
     --color-success-dark: #007E6E;
+    --color-success-light: #3ff2b7;
     --color-danger: #ef4444;
     --color-warning: #f59e0b;
     --color-warning-light: #f5dcb3;
@@ -61,8 +62,24 @@
     @apply shadow-secondary shadow-[0_2px_12px];
 }
 
+.glow-text {
+    @apply text-shadow-warning text-shadow-[0_0_12px];
+}
+
+.glow-text-green {
+    @apply text-shadow-success text-shadow-[0_0_12px];
+}
+
 .glow-green {
     @apply shadow-success shadow-[0_2px_12px];
+}
+
+.glow-red {
+    @apply shadow-red-500 shadow-[0_2px_12px];
+}
+
+.bgt2 {
+    @apply bg-linear-to-br backdrop-blur-3xl to-white/65 from-secondary/20;
 }
 
 .base-bg-gradient-r {

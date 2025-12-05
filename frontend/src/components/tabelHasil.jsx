@@ -55,7 +55,7 @@ export default function TabelHasil({ applyKecermatan, regressionResult, colDef, 
     }, [regressionResult]);
 
     return (
-        <div className="my-8 border-2 border-t-8 border-primary-dark bg-white rounded-3xl p-8">
+        <div className="my-8 border-2 border-t-8 border-success bg-white rounded-3xl p-8 glow-green">
             <div className="flex justify-between items-center mb-6">
                 <p className=" text-xl md:text-2xl font-bold">Tabel Hasil Perhitungan Detail</p>
                 {props.kecermatan != null && (

@@ -346,7 +346,7 @@ export default function OutputPage({ regressionResult, colDef, sessionId, ...pro
 
 
             {regressionResult.model != "logarithmic" && (
-                <div className="bg-white p-8 rounded-3xl shadow-xl flex flex-col border-2 border-t-8 border-secondary my-8">
+                <div className="bg-white p-8 rounded-3xl shadow-xl flex flex-col border-2 border-t-8 border-secondary my-8 glow">
                     <div className="w-full justify-between flex items-center mb-4">
                         <p className="text-xl md:text-2xl font-bold">
                             Visualisasi Scatter Plot
@@ -374,7 +374,7 @@ export default function OutputPage({ regressionResult, colDef, sessionId, ...pro
                 </div>
             )}
 
-            <button type="button" className="bg-linear-to-br from-primary to-secondary hover:from-secondary hover:to-primary duration-300 ease-in-out transition-colors text-white font-bold text-xl md:text-2xl p-4 rounded-xl shadow-md w-full ml-auto title-font border-secondary border" onClick={handleExport}>
+            <button type="button" className="bg-linear-to-br from-primary to-secondary hover:from-secondary hover:to-primary duration-300 ease-in-out transition-colors text-white font-bold text-xl md:text-2xl p-4 rounded-xl shadow-md w-full ml-auto title-font border-secondary border glow" onClick={handleExport}>
                 Export Hasil
             </button>
         </div>

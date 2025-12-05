@@ -1,13 +1,14 @@
 import { useEffect, useMemo, useState } from "react";
 import TabelHasil from "../components/tabelHasil.jsx";
 import { MathJax } from "better-react-mathjax";
+import AnimatedContent from "../components/Animated.jsx";
 
 {/* NOTE: reggresionResult = res */}
 {/* NOTE: applyKecermatan = kec */}
 
 export default function ProsesPage({ res, kec, ...props }) {
     const debugMessage = (main, log) => (
-        <div className="bg-success/20 border-2 border-success rounded-xl p-2 md:p-4 text-success-dark font-bold text-[0.75rem] md:text-xl flex gap-2 my-1 md:my-4">
+        <div className="bg-success-light glow-green border-2 border-success rounded-xl p-2 md:p-4 text-success-dark font-bold text-[0.75rem] md:text-xl flex gap-2 my-1 md:my-4">
             <i className="bi bi-check" />
             <p>{main}</p>
             <p className="ml-auto">{log}</p>
@@ -34,12 +35,12 @@ export default function ProsesPage({ res, kec, ...props }) {
         <div className="w-[90%] md:w-3/4 mx-auto gap-4 md:gap-8 mb-12">
 
             {/* ================= PREPROCESSING ================= */}
-            <div className="bg-white rounded-3xl border-2 border-secondary border-t-8 p-8 w-full shadow-xl flex flex-col">
+            <div className="bgt rounded-3xl glow p-8 w-full shadow-xl flex flex-col">
                 <p className="text-xl md:text-2xl font-bold">Preprocessing Data</p>
 
-                {res?.clean_data_report?.map((rep, _i) =>
-                    debugMessage(rep.split(":")[0], rep.split(":")[1] || "")
-                )}
+                    {res?.clean_data_report?.map((rep, _i) =>
+                        debugMessage(rep.split(":")[0], rep.split(":")[1] || "")
+                    )}
 
                 {/* Loading bar                {loading && (
                     <div className="w-full h-2 bg-gray-200 rounded-full overflow-hidden my-4">
@@ -66,41 +67,41 @@ export default function ProsesPage({ res, kec, ...props }) {
                 <div className="flex gap-4 md:gap-8 my-8 flex-wrap md:flex-nowrap">
 
                     {/* Statistik Dasar */}
-                    <div className="bg-white rounded-3xl p-8 border-t-8 border-2 shadow-xl border-primary w-full">
+                    <div className="bgt p-8 rounded-3xl w-full glow">
                         <p className="text-xl md:text-2xl font-bold">Statistik Dasar</p>
                         <div className="flex flex-col my-4 md:my-16 text-[0.85rem] md:text-xl gap-4 md:gap-8 w-5/6 mx-auto">
                             <div className="flex justify-between">
                                 <p>Rata-rata X (x̄)</p>
-                                <p className="text-primary font-bold">{kec(stats?.avgX)}</p>
+                                <p className="text-warning-light font-bold glow-text">{kec(stats?.avgX)}</p>
                             </div>
 
                             <div className="flex justify-between">
                                 <p>Rata-rata Y (ȳ)</p>
-                                <p className="text-primary font-bold">{kec(stats?.avgY)}</p>
+                                <p className="text-warning-light font-bold glow-text">{kec(stats?.avgY)}</p>
                             </div>
 
                         </div>
                     </div>
 
                     {/* Parameter Regresi */}
-                    <div className="bg-white rounded-3xl p-8 border-t-8 border-2 shadow-xl border-secondary w-full">
+                    <div className="p-8 rounded-3xl border-secondary w-full bgt glow">
                         <p className="text-xl md:text-2xl font-bold">Parameter Regresi</p>
                         <div className="flex flex-col my-4 md:my-8 text-[0.85rem] md:text-xl gap-4 md:gap-8 w-5/6 mx-auto">
                             <div className="flex justify-between">
                                 <p>Koefisien Korelasi</p>
-                                <p className="text-secondary font-bold">{kec(res.r)}</p>
+                                <p className="text-success-light font-bold glow-text-green">{kec(res.r)}</p>
                             </div>
 
                             <div className="flex justify-between">
                                 {res.model === "logarithmic" ? (
                                     <>
                                         <p>Intercept (koefisien n)</p>
-                                        <p className="text-secondary font-bold">{kec(res.n)}</p>
+                                        <p className="text-success-light glow-text-green font-bold">{kec(res.n)}</p>
                                     </>
                                 ) : (
                                     <>
                                         <p>Intercept (koefisien a)</p>
-                                        <p className="text-secondary font-bold">{kec(res.a)}</p>
+                                        <p className="text-success-light glow-text-green font-bold">{kec(res.a)}</p>
                                     </>
                                 )}
                             </div>
@@ -109,12 +110,12 @@ export default function ProsesPage({ res, kec, ...props }) {
                                 {res.model === "logarithmic" ? (
                                     <>
                                         <p>Intercept (koefisien log k)</p>
-                                        <p className="text-secondary font-bold">{kec(res.k)}</p>
+                                        <p className="text-success-light glow-text-green font-bold">{kec(res.k)}</p>
                                     </>
                                 ) : (
                                     <>
                                         <p>Intercept (koefisien b)</p>
-                                        <p className="text-secondary font-bold">{kec(res.b)}</p>
+                                        <p className="text-success-light glow-text-green font-bold">{kec(res.b)}</p>
                                     </>
                                 )}
 
@@ -126,7 +127,7 @@ export default function ProsesPage({ res, kec, ...props }) {
 
             {/* NOTE: PERSAMAAN REGRESI */}
             {res && (
-                <div className="w-full p-8 rounded-3xl base-bg-gradient-br items-center flex flex-col my-8">
+                <div className="w-full p-8 rounded-3xl items-center flex flex-col my-8 bgt glow">
                     <p className="text-xl md:text-2xl title-font text-white text-center mt-4 mb-8">
                         Persamaan Regresi
                     </p>
@@ -148,7 +149,7 @@ export default function ProsesPage({ res, kec, ...props }) {
                     </div>
 
                     <button
-                        className="bg-success text-white font-bold text-[0.85rem] md:text-xl p-2 md:p-4 rounded-xl w-full my-4 md:my-8 shadow-[0_0_16px] shadow-success/50"
+                        className="bg-success text-white font-bold text-[0.85rem] md:text-xl p-2 md:p-4 rounded-xl w-full my-4 md:my-8 glow-green"
                         type="button"
                         onClick={()=> { props.setTab(3); window.scrollTo(0, 0); }}
                     >
@@ -168,7 +169,7 @@ export default function ProsesPage({ res, kec, ...props }) {
                 />
             )}
 
-            <div className="w-full p-8 rounded-3xl bg-white flex flex-col my-8 border-2 border-t-8 border-secondary gap-2 md:gap-4 items-center">
+            <div className="w-full p-8 rounded-3xl bg-white flex flex-col my-8 border-2 border-t-8 border-secondary gap-2 md:gap-4 items-center glow">
                 <p className="text-xl md:text-2xl font-bold ">
                     Rincian Perhitungan
                 </p>
