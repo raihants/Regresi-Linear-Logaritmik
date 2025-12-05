@@ -133,17 +133,17 @@ export default function ProsesPage({ res, kec, ...props }) {
                     </p>
 
                     <div className="bg-white p-6 flex flex-col gap-0 md:gap-4 text-center items-center rounded-3xl w-full">
-                        <p className="text-2xl md:text-4xl title-font bg-linear-to-r from-primary to-secondary text-transparent bg-clip-text inline-block">
+                        <p className="text-[1rem] md:text-4xl title-font bg-linear-to-r from-primary to-secondary text-transparent bg-clip-text inline-block">
                             Y = {kec(res.equation?.match(/-?\d+(\.\d+)?/g)[0])} + {kec(res.equation?.match(/-?\d+(\.\d+)?/g)[1])}X
                         </p>
 
                         {res.model === "logarithmic" && (
-                            <p className="text-2xl md:text-4xl title-font bg-linear-to-r from-primary to-secondary text-transparent bg-clip-text inline-block">
+                            <p className="text-[1rem] md:text-4xl title-font bg-linear-to-r from-primary to-secondary text-transparent bg-clip-text inline-block">
                                 Log(Y) = {kec(res.equation_log?.match(/-?\d+(\.\d+)?/g)[0])} + {kec(res.equation_log?.match(/-?\d+(\.\d+)?/g)[1])}Log(X) 
                             </p>
                         )}
 
-                        <p className="text-2xl md:text-4xl title-font bg-linear-to-r from-primary to-secondary text-transparent bg-clip-text inline-block">
+                        <p className="text-[1rem] md:text-4xl title-font bg-linear-to-r from-primary to-secondary text-transparent bg-clip-text inline-block">
                             r² = {kec(res.r2)}
                         </p>
                     </div>

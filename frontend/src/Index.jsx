@@ -40,7 +40,7 @@ export default function Index()
 
     return (
         <div className="w-full h-full relative">
-            <div style={{ width: '100%', height: '1200px', position: 'fixed', z: '-1' }}>
+            <div style={{ width: '100%', height: '1200px', position: 'fixed', z: '-1' }} className="hidden md:block">
                 <Plasma 
                     color="#8b5cf6"
                     speed={1}
@@ -78,7 +78,7 @@ export default function Index()
                         {!onChat && (
                             <>
                                 {notification && (
-                                    <div className="bg-white p-6 pr-12 rounded-3xl w-1/3 ml-auto my-4 text-justify rounded-br-none relative shadow-xl text-xl">
+                                    <div className="bg-white p-6 pr-12 rounded-3xl w-1/2 md:w-1/3 ml-auto my-4 text-justify rounded-br-none relative shadow-xl text-xl">
                                         <p>Apakah ada yang anda ingin tanyakan?, tekan tombol chat dibawah untuk bertanya!</p>
                                         <button type="button" onClick={()=> setNotification(false)} className="text-gray-400 absolute top-2 right-2 text-[1rem] bg-gray-300 px-2.5 py-1 rounded-full hover:bg-red-300 hover:text-red-600 duration-300 ease-in-out transition-colors">X</button>
                                     </div>

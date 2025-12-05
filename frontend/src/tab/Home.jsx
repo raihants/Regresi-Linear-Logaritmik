@@ -29,7 +29,7 @@ export default function HomePage({setTab, setWarningMsg}) {
                     delay={300}
                     animateBy="words"
                     direction="top"
-                    className="text-5xl md:text-6xl title-font text-center"
+                    className="text-3xl md:text-6xl title-font text-center mx-auto w-full ml-6"
                 />
                 {/*<p className="text-5xl md:text-6xl title-font text-center">Analisis Regresi</p>*/}
                 <p className="text-[1rem] md:text-xl w-2/3 text-center">Alat Analisis Data yang mudah digunakan untuk menghitung dan memvisualisasikan hubungan linear antara dua variabel dengan antarmuka yang modern dan intuitif</p>
