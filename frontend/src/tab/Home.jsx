@@ -37,7 +37,7 @@ export default function HomePage({setTab, setWarningMsg}) {
                     {/* NOTE: Start Button and Info Button */}
                     <button type="button" className="bg-linear-to-r from-primary to-secondary hover:from-secondary hover:to-primary shadow-xl py-2 px-6 rounded-lg transition-colors duration-600 ease-in-out mx-auto" onClick={()=> { setTab(1); window.scrollTo(0, 0); }}>
                         <i className="bi bi-play-fill mx-1" />Mulai Analisis</button>
-                    <a type="button" className="bg-white/30 shadow-xl py-2 px-6 rounded-lg border-white border-2 hover:bg-white/60 transition-colors duration-600 ease-in-out mx-auto" href="https://id.wikipedia.org/wiki/Analisis_regresi">
+                    <a type="button" className="bg-white/30 shadow-xl py-2 px-6 rounded-lg border-white border-2 hover:bg-white/60 transition-colors duration-600 ease-in-out mx-auto" href="https://www.canva.com/design/DAG6jCSCrzk/FPT-RCv06uAz5Hu6HaAaWg/view?utm_content=DAG6jCSCrzk&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=he87916382f">
                         <i className="bi bi-info-circle-fill mx-1"/>Pelajari Lebih Lanjut</a>
                 </div>
             </div>
