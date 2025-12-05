@@ -17,10 +17,17 @@ app = FastAPI(
 # CORS Middleware
 # ========================
 origins = [
-    "http://localhost:5173",     # React Vite Dev
-    "http://127.0.0.1:5173",     # alternatif
-]
+    "http://localhost:5173",
+    "http://127.0.0.1:5173",
 
+    # ==== DOMAIN HOSTING FRONTEND ====
+    "http://18.143.139.126",
+    "https://18.143.139.126",
+    "http://reglab.cyou",
+    "https://reglab.cyou",
+    "http://www.reglab.cyou",
+    "https://www.reglab.cyou",
+]
 app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,
